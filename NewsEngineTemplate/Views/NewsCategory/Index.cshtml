@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Categories";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="panel-body bg-info">
+    <h1 class="text-center">Categories</h1>
+
+    <div class="col">
+
+        @foreach (var category in ViewBag.categories)
+        {
+            <div class="col">
+                <h2>@category.Title</h2>
+                <p>@category.Description.Substring(0, Math.Min(category.Description.Length, 200))...</p>
+                <p><a class="btn btn-info" href="/categories/category/@category.CategoryID">Browse category</a></p>
+            </div>
+        }
+    </div>
+
+    <div><a class="btn btn-info" href="/categories/new">New category</a></div>
+
+</div>

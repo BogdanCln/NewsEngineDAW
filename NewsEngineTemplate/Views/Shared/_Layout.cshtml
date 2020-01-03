@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="DAW 2019-2020">
+    <meta name="author" content="Calina Bogdan">
+    <link rel="icon" href="./favicon.ico">
+
+    <title>@ViewBag.Title - News Engine Template</title>
+
+    @Styles.Render("~/Content/css")
+
+    <!-- Bootstrap core CSS -->
+    <link href="/Content/bootstrap.min.css" rel="stylesheet">
+
+    <!-- fontawesome icons -->
+    <link rel="stylesheet" href="/Content/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css">
+</head>
+
+<body class="bg-semidark">
+
+    <div class="container">
+        <div class="py-5 text-center">
+            <a href="/">
+                <img class="d-block mx-auto mb-4" src="/Content/logo.png" alt="" height="72">
+            </a>
+        </div>
+
+        @RenderBody()
+
+        <!-- News Articles -->
+
+
+        <footer class="my-5 pt-5 text-muted text-center text-small">
+            <p class="mb-1">&copy; 2019 Bogdan Calina</p>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a target="_blank" href="https://bogdan.codes">About</a></li>
+                <li class="list-inline-item"><a target="_blank" href="https://bogdan.codes">Contact</a></li>
+            </ul>
+        </footer>
+    </div>
+
+    <div id="notifications-container">
+        <div class="alert alert-primary" role="alert" id="alert-prototype-reservation">
+            Added new reservation
+        </div>
+        <div class="alert alert-secondary" role="alert" id="alert-prototype-resource">
+            Added new resource
+        </div>
+    </div>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+    <!-- <script src="./lib/jquery-3.4.1.min.js"></script> -->
+    <!-- <script src="./lib/bootstrap.min.js"></script> -->
+    <script src="/Content/index.js"></script>
+    <script src="/Content/reservations.js"></script>
+    <script src="/Content/resources.js"></script>
+</body>
+
+</html>

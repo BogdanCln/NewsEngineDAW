@@ -1,0 +1,23 @@
+﻿<form method="post" action="/categories/edit/@ViewBag.category.CategoryID" class="form-group" style="margin:1em auto; position: relative; height: 10em; width: 100%">
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+    <div>
+        <label>Title</label><br />
+        <input type="text" name="Title" value="@ViewBag.category.Title" />
+    </div>
+    <div>
+        <label>Description</label><br />
+        <textarea name="Description" value="@ViewBag.category.Description"></textarea>
+    </div>
+    <div>
+        <button type="submit" class="btn btn-sm btn-success">Update category</button>
+    </div>
+</form>
+
+<form method="post" action="/categories/delete/@ViewBag.category.CategoryID" class="form-group">
+    @Html.HttpMethodOverride(HttpVerbs.Delete)
+    <button type="submit" class="btn btn-sm btn-danger">Delete category</button>
+    @*
+        #TODO: Bootstrap modal to confirm action
+        #TODO: Category edit history
+    *@
+</form>

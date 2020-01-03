@@ -1,0 +1,107 @@
+﻿body {
+    --coffee: #312d2a;
+    --atol: #2e686c;
+    --green: #2b6242;
+    --orange: #ae562c;
+    color: white;
+}
+
+h1, h2, h3, h4, h4, h5, label, p, span, div, i {
+    color: white;
+}
+
+.proto {
+    opacity: 0;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+hr.sectionsSplit {
+    border-top: 1px solid #8c8b8b;
+}
+
+.bg-semidark {
+    background-color: var(--coffee) !important;
+}
+
+.badge-primary {
+    background-color: var(--atol) !important;
+}
+
+.custom-select,
+.form-control {
+    color: white;
+}
+
+.custom-radio .custom-control-input:checked ~ .custom-control-label::before,
+.custom-control-input:checked ~ .custom-control-label::before {
+    background-color: rgb(45, 189, 233) !important;
+}
+
+.btn-outline-dark {
+    color: white;
+}
+
+.form-control {
+    background-color: var(--coffee)
+}
+
+#reservation-prototype,
+#resource-prototype {
+    display: none !important;
+}
+
+#notifications-container {
+    position: fixed;
+    right: 1vw;
+    bottom: 1vw;
+    width: fit-content;
+    min-width: 150px;
+}
+
+.article-content {
+    min-width: 70%;
+    max-width: 90%;
+}
+
+.alert-primary {
+    color: white;
+    background-color: var(--green);
+    border-color: var(--atol);
+}
+
+.alert-secondary {
+    color: white;
+    background-color: var(--atol);
+    border-color: var(--green);
+}
+
+#alert-prototype-reservation,
+#alert-prototype-resource {
+    display: none;
+}
+
+.delete-reservation-checkbox {
+    -webkit-transform: scale(2);
+    transform: scale(2);
+    -o-transform: scale(2);
+    margin: auto 0;
+    top: 3px;
+    position: relative;
+}
+
+#multiple-select-actions-reservation,
+#multiple-select-actions-resource {
+    display: none;
+}
+
+.edit-form {
+    margin-top: 1em;
+}
+
+.reservation-buttons {
+    display: flex;
+    align-items: center;
+}
