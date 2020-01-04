@@ -12,7 +12,6 @@ namespace NewsEngineTemplate.Controllers
         private NewsDBContext newsDB = new NewsDBContext();
         private NewsCategoryDBContext categoriesDB = new NewsCategoryDBContext();
 
-
         // GET: All news list
         public ActionResult Index()
         {
@@ -43,19 +42,21 @@ namespace NewsEngineTemplate.Controllers
             try
             {
                 News article = newsDB.NewsArticles.Find(ID);
-                ViewBag.news = article;
+                article.Categories = GetAllCategories();
+
                 if (TempData.ContainsKey("redirectMessage"))
                 {
                     ViewBag.notification = TempData["redirectMessage"].ToString();
                     if (TempData.ContainsKey("redirectMessageClass"))
                     {
                         ViewBag.notificationClass = TempData["redirectMessageClass"].ToString();
-                    } else
+                    }
+                    else
                     {
                         ViewBag.notificationClass = "info";
                     }
                 }
-                return View("Show");
+                return View("Show", article);
             }
             catch (Exception e)
             {
@@ -69,7 +70,7 @@ namespace NewsEngineTemplate.Controllers
         [ActionName("new")]
         public ActionResult Create()
         {
-            ViewBag.categories = GetAllCategories();
+            ViewBag.Categories = GetAllCategories();
 
             if (TempData.ContainsKey("redirectMessage"))
             {
@@ -115,8 +116,7 @@ namespace NewsEngineTemplate.Controllers
         public ActionResult Update(int ID)
         {
             News article = newsDB.NewsArticles.Find(ID);
-            ViewBag.article = article;
-            ViewBag.categories = GetAllCategories();
+            article.Categories = GetAllCategories();
 
             if (TempData.ContainsKey("redirectMessage"))
             {
@@ -131,7 +131,7 @@ namespace NewsEngineTemplate.Controllers
                 }
             }
 
-            return View("Update");
+            return View("Update", article);
         }
 
         // PUT: Send the updated news article data.
@@ -170,7 +170,8 @@ namespace NewsEngineTemplate.Controllers
                 TempData["redirectMessage"] = "The article has been deleted.";
                 TempData["redirectMessageClass"] = "info";
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 TempData["redirectMessage"] = "The article has not been deleted.";
                 TempData["redirectMessageClass"] = "danger";
             }

@@ -26,5 +26,7 @@ namespace NewsEngineTemplate.Models
     {
         public NewsCategoryDBContext() : base("NewsDBConnectionString") { }
         public DbSet<NewsCategory> NewsCategories { get; set; }
+        public DbSet<News> NewsArticles { get; set; }
+
     }
 }

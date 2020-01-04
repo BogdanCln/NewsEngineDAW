@@ -28,9 +28,8 @@ namespace NewsEngineTemplate.Controllers
             try
             {
                 NewsCategory category = categoriesDB.NewsCategories.Find(ID);
-                ViewBag.category = category;
                 ViewBag.news = GetNewsArticlesByCategory(ID);
-                return View("Show");
+                return View("Show", category);
             }
             catch (Exception e)
             {
@@ -72,8 +71,7 @@ namespace NewsEngineTemplate.Controllers
         public ActionResult Update(int ID)
         {
             NewsCategory category = categoriesDB.NewsCategories.Find(ID);
-            ViewBag.category = category;
-            return View("Update");
+            return View("Update", category);
         }
 
         // PUT: Send the updated news article data.

@@ -37,7 +37,7 @@ Phasellus sodales tempor nulla, vel gravida felis suscipit pulvinar. Cras congue
             <div class="form-group row">
                 <label class="col-2 col-form-label">Category</label>
                 <div class="col-10">
-                    @Html.DropDownListFor(m => m.CategoryID, new SelectList(ViewBag.categories, "Value", "Text"),
+                    @Html.DropDownListFor(m => m.CategoryID, new SelectList(ViewBag.Categories, "Value", "Text"),
                         "Select category", new { @class = "form-control resource_id-input" })
 
                     @Html.ValidationMessageFor(m => m.ID, "", new { @class = "text-danger" })

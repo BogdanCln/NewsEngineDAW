@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewsEngineTemplate.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
@@ -22,6 +23,7 @@ namespace NewsEngineTemplate.Models
 
         [Required(ErrorMessage = "Category is mandatory")]
         public int CategoryID { get; set; }
+
         public virtual NewsCategory Category { get; set; }
         public IEnumerable<SelectListItem> Categories { get; set; }
 
@@ -33,5 +35,7 @@ namespace NewsEngineTemplate.Models
     {
         public NewsDBContext() : base("NewsDBConnectionString") { }
         public DbSet<News> NewsArticles { get; set; }
+        public DbSet<NewsCategory> Categories { get; set; }
+
     }
 }
