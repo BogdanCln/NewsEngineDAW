@@ -17,7 +17,6 @@ namespace NewsEngineTemplate.Controllers
         // GET: All news list
         public ActionResult Index()
         {
-            Debug.WriteLine("Hello World");
             IQueryable<News> articles = GetNewsArticles();
             ViewBag.news = articles;
 
@@ -94,13 +93,11 @@ namespace NewsEngineTemplate.Controllers
         // POST: Receive the new news article form-data.
         [ActionName("new")]
         [HttpPost]
-        public ActionResult Create([Bind(Exclude = "ID")] News article)
+        public ActionResult Create([Bind(Exclude = "ID, PublishDate")] News article)
         {
             article.PublishDate = DateTime.Now;
             try
             {
-                Debug.WriteLine(ModelState.IsValid);
-
                 if (ModelState.IsValid)
                 {
                     newsDB.NewsArticles.Add(article);

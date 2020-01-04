@@ -1,20 +1,32 @@
 ﻿
-<form id="add-category-form" method="post" action="/categories/new" class="form-group" style="margin:1em auto; position: relative; width: 100%">
+@model NewsEngineTemplate.Models.NewsCategory
+
+@using (Html.BeginForm("new", "NewsCategory", FormMethod.Post, new { @class = "form-group", role = "margin:1em auto; position: relative; width: 100%" }))
+{
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    @Html.HiddenFor(m => m.CategoryID)
+    @Html.Hidden("CreateDate", DateTime.Now, new { @class = "form-control" })
+
     <div class="form-group row">
-        <label class="col-2 col-form-label">Title</label>
+        @Html.Label("Title", "Category Title", new { @class = "col-2 col-form-label" })
         <div class="col-10">
-            <input class="form-control category-title-input" type="text"
-                   value="Insert category title"
-                   name="Title">
+            @Html.TextBox("Title", "Insert category title", new { @class = "form-control article-title-input", value = "Insert category title" })
         </div>
+        @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger " })
+
     </div>
+
     <div class="form-group row">
-        <label class="col-2 col-form-label">Description</label>
+        @Html.Label("Description", "Category description", new { @class = "col-2 col-form-label" })
         <div class="col-10">
-            <input class="form-control category-description-input" type="text"
-                   value="Insert category description"
-                   name="Description">
+            @Html.TextArea("Description", "Everything about abc",
+           new { @class = "form-control" })
         </div>
+        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger " })
     </div>
-    <button type="submit" class="btn btn-sm btn-success">Publish category</button>
-</form>
+
+    <button type="submit" class="btn btn-outline-success btn-lg">
+        <i class="fa fa-check"></i>
+    </button>
+}

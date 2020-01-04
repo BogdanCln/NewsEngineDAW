@@ -1,6 +1,7 @@
 ﻿using NewsEngineTemplate.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -48,20 +49,39 @@ namespace NewsEngineTemplate.Controllers
         // POST: Send the new news category data.
         [ActionName("new")]
         [HttpPost]
-        public ActionResult Create(NewsCategory category)
+        public ActionResult Create([Bind(Exclude = "CategoryID, CreateDate")]NewsCategory category)
         {
             category.CreateDate = DateTime.Now;
 
             try
             {
-                categoriesDB.NewsCategories.Add(category);
-                categoriesDB.SaveChanges();
-                return Redirect("/categories/category/" + category.CategoryID);
+                Debug.WriteLine(ModelState.IsValid);
+
+                if (ModelState.IsValid)
+                {
+                    categoriesDB.NewsCategories.Add(category);
+                    categoriesDB.SaveChanges();
+                    TempData["redirectMessage"] = "The category has been published.";
+                    TempData["redirectMessageClass"] = "success";
+                    return Redirect("/categories/category/" + category.CategoryID);
+                }
+                else
+                {
+                    string messages = string.Join("; ", ModelState.Values
+                                        .SelectMany(x => x.Errors)
+                                        .Select(x => x.ErrorMessage));
+                    Debug.WriteLine(messages);
+
+                    TempData["redirectMessage"] = "The category has not been published.";
+                    TempData["redirectMessageClass"] = "error";
+                    return View("Create", category);
+                }
             }
             catch (Exception e)
             {
-                ViewBag.errorMessage = e.Message;
-                return View("Error");
+                TempData["redirectMessage"] = "The category has not been published.";
+                TempData["redirectMessageClass"] = "error";
+                return View("Create", category);
             }
         }
 

@@ -1,24 +1,39 @@
 ﻿@model NewsEngineTemplate.Models.NewsCategory
 
-<form method="post" action="/categories/edit/@Model.CategoryID" class="form-group" style="margin:1em auto; position: relative; width: 100%">
+@using (Html.BeginForm("edit", "NewsCategory", FormMethod.Post, new { @class = "form-group", role = "margin:1em auto; position: relative; width: 100%" }))
+{
     @Html.HttpMethodOverride(HttpVerbs.Put)
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    @Html.HiddenFor(m => m.CategoryID)
+    @Html.Hidden("CreateDate", DateTime.Now, new { @class = "form-control" })
 
     <div class="form-group row">
-        <label class="col-2 col-form-label">Title</label>
+        @Html.Label("Title", "Category Title", new { @class = "col-2 col-form-label" })
         <div class="col-10">
-            <input class="form-control category-title-input" type="text" value="@Model.Title" name="Title">
+            @Html.TextBox("Title", Model.Title, new { @class = "form-control article-title-input", value = Model.Title })
         </div>
+        @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger " })
+
     </div>
-    <label>Description</label><br />
-    <textarea name="Description" class="form-control category-description-input">@Model.Description</textarea>
-    <div>
-        <button type="submit" class="btn btn-sm btn-success mt-2">Update category</button>
+
+    <div class="form-group row">
+        @Html.Label("Description", "Category description", new { @class = "col-2 col-form-label" })
+        <div class="col-10">
+            @Html.TextArea("Description", Model.Description,
+           new { @class = "form-control" })
+        </div>
+        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger " })
     </div>
-</form>
+
+    <button type="submit" class="btn btn-outline-success btn-lg">
+        <i class="fa fa-check"></i>
+    </button>
+}
 
 <form method="post" action="/categories/delete/@Model.CategoryID" class="form-group">
     @Html.HttpMethodOverride(HttpVerbs.Delete)
-    <button type="submit" class="btn btn-sm btn-danger">Delete category</button>
+    <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete category</button>
     @*
         #TODO: Bootstrap modal to confirm action
         #TODO: Category edit history
