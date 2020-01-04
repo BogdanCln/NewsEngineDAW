@@ -9,6 +9,7 @@ namespace NewsEngineTemplate.Controllers
 {
     public class NewsCategoryController : Controller
     {
+        private NewsDBContext newsDB = new NewsDBContext();
         private NewsCategoryDBContext categoriesDB = new NewsCategoryDBContext();
 
         // GET: All categories
@@ -28,6 +29,7 @@ namespace NewsEngineTemplate.Controllers
             {
                 NewsCategory category = categoriesDB.NewsCategories.Find(ID);
                 ViewBag.category = category;
+                ViewBag.news = GetNewsArticlesByCategory(ID);
                 return View("Show");
             }
             catch (Exception e)
@@ -120,5 +122,12 @@ namespace NewsEngineTemplate.Controllers
             var queryResult = from categories in categoriesDB.NewsCategories orderby categories.CreateDate descending select categories;
             return queryResult;
         }
+
+        public IQueryable<News> GetNewsArticlesByCategory(int catID)
+        {
+            var articles = from news in newsDB.NewsArticles where news.Category.CategoryID == catID orderby news.PublishDate descending select news;
+            return articles;
+        }
+
     }
 }

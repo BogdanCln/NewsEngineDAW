@@ -1,24 +1,43 @@
-﻿@{
-    ViewBag.Title = "Categories";
+﻿@if (ViewData.ContainsKey("notification"))
+{
+    <h3 class="alert alert-@ViewBag.notificationClass" role="alert">@ViewBag.notification</h3>
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="col">
+    <div class="d-flex flex-row justify-content-between">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+            Categories
+        </h4>
 
-<div class="panel-body bg-info">
-    <h1 class="text-center">Categories</h1>
-
-    <div class="col">
-
+        <div>
+            <div><a class="btn btn-success" href="/categories/new"><i class="fas fa-plus"></i></a></div>
+        </div>
+    </div>
+    <ul class="list-group mb-3" id="reservations-content">
         @foreach (var category in ViewBag.categories)
         {
-            <div class="col">
-                <h2>@category.Title</h2>
-                <p>@category.Description.Substring(0, Math.Min(category.Description.Length, 200))...</p>
-                <p><a class="btn btn-info" href="/categories/category/@category.CategoryID">Browse category</a></p>
-            </div>
+            <li class="article-container list-group-item d-flex justify-content-between lh-condensed bg-dark">
+                <div class="article-content">
+                    <h4 class="mb-1 article-title">@category.Title</h4>
+                    <small class="article-content">
+                        @category.Description.Substring(0, Math.Min(category.Description.Length, 200))...
+                    </small>
+
+                </div>
+                <div class="reservation-buttons">
+                    <a class="btn btn-outline-dark btn-lg" href="/categories/edit/@category.CategoryID">
+                        <i class="fas fa-edit"></i>
+                        <span>Edit</span>
+                    </a>
+
+                    <a class="btn btn-outline-dark btn-lg" href="/categories/category/@category.CategoryID">
+                        <i class="fas fa-arrow-right"></i> 
+                        <span>Browse</span>
+                    </a>
+                </div>
+                <input type="checkbox" name="delete" class="delete-reservation-checkbox" style="display: none;">
+            </li>
+
         }
-    </div>
-
-    <div><a class="btn btn-info" href="/categories/new">New category</a></div>
-
+    </ul>
 </div>

@@ -1,14 +1,20 @@
 ﻿
-<form method="post" action="/categories/new" class="form-group" style="margin:1em auto; position: relative; height: 10em; width: 100%">
-    <div>
-        <label>Title</label><br />
-        <input type="text" name="Title" />
+<form id="add-category-form" method="post" action="/categories/new" class="form-group" style="margin:1em auto; position: relative; width: 100%">
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Title</label>
+        <div class="col-10">
+            <input class="form-control category-title-input" type="text"
+                   value="Insert category title"
+                   name="Title">
+        </div>
     </div>
-    <div>
-        <label>Description</label><br />
-        <textarea name="Description"></textarea>
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Description</label>
+        <div class="col-10">
+            <input class="form-control category-description-input" type="text"
+                   value="Insert category description"
+                   name="Description">
+        </div>
     </div>
-    <div>
-        <button type="submit" class="btn btn-sm btn-success">Publish category</button>
-    </div>
+    <button type="submit" class="btn btn-sm btn-success">Publish category</button>
 </form>

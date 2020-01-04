@@ -1,15 +1,18 @@
-﻿<form method="post" action="/categories/edit/@ViewBag.category.CategoryID" class="form-group" style="margin:1em auto; position: relative; height: 10em; width: 100%">
+﻿<form method="post" action="/categories/edit/@ViewBag.category.CategoryID" class="form-group" style="margin:1em auto; position: relative; width: 100%">
     @Html.HttpMethodOverride(HttpVerbs.Put)
-    <div>
-        <label>Title</label><br />
-        <input type="text" name="Title" value="@ViewBag.category.Title" />
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Title</label>
+        <div class="col-10">
+            <input class="form-control category-title-input" type="text"
+                   value="@ViewBag.category.Title"
+                   name="Title">
+        </div>
     </div>
-    <div>
         <label>Description</label><br />
-        <textarea name="Description" value="@ViewBag.category.Description"></textarea>
-    </div>
+        <textarea name="Description" class="form-control category-description-input">@ViewBag.category.Description</textarea>
     <div>
-        <button type="submit" class="btn btn-sm btn-success">Update category</button>
+        <button type="submit" class="btn btn-sm btn-success mt-2">Update category</button>
     </div>
 </form>
 

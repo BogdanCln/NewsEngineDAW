@@ -1,10 +1,36 @@
-﻿<div class="panel-body bg-info">
-    <h1 class="text-center">@ViewBag.category.Title</h1>
+﻿    <div class="col">
+        <div class="d-flex flex-row justify-content-between">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                @ViewBag.category.Title
+            </h4>
 
-    <div class="col">
-        <div class="col">
-            <p>@ViewBag.category.Description</p>
+            <div>
+                <div><a class="btn btn-success" href="/news/new"><i class="fas fa-plus"></i></a></div>
+            </div>
         </div>
-        <a href="/categories/edit/@ViewBag.category.CategoryID" class="btn btn-warning">Edit category</a>
+        <ul class="list-group mb-3" id="reservations-content">
+            @foreach (var article in ViewBag.news)
+            {
+                <li class="article-container list-group-item d-flex justify-content-between lh-condensed bg-dark">
+                    <div class="article-content">
+                        <h4 class="mb-1 article-title">@article.Title</h4>
+                        <small class="article-content">
+                            @article.Content.Substring(0, Math.Min(article.Content.Length, 600))...
+                        </small>
+                        <h6 class="mt-1 article-id mt-3">@article.PublishDate | Bogdan Calina</h6>
+
+                    </div>
+                    <div class="reservation-buttons">
+                        <a class="btn btn-outline-dark btn-lg" href="/news/edit/@article.ID">
+                            <i class="fas fa-edit"></i>
+                        </a>
+
+                        <a class="btn btn-outline-dark btn-lg" href="/news/article/@article.ID">
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    <input type="checkbox" name="delete" class="delete-reservation-checkbox" style="display: none;">
+                </li>
+            }
+        </ul>
     </div>
-</div>

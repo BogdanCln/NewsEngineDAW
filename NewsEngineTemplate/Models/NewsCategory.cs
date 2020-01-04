@@ -14,7 +14,7 @@ namespace NewsEngineTemplate.Models
         [Required(ErrorMessage = "Category title is mandatory")]
         [MaxLength(30)]
         public string Title { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Description is mandatory")]
         public string Description { get; set; }
         public DateTime CreateDate { get; set; }
 
