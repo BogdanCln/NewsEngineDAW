@@ -18,7 +18,9 @@ namespace NewsEngineTemplate
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            Database.SetInitializer<NewsDBContext>(new DropCreateDatabaseIfModelChanges<NewsDBContext>());
+            //Database.SetInitializer<NewsDBContext>(new DropCreateDatabaseIfModelChanges<NewsDBContext>());
+            //Database.SetInitializer<NewsCategoryDBContext>(new DropCreateDatabaseIfModelChanges<NewsCategoryDBContext>());
+
         }
     }
 }

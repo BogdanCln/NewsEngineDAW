@@ -105,3 +105,11 @@ hr.sectionsSplit {
     display: flex;
     align-items: center;
 }
+
+.field-validation-valid {
+    display: none;
+}
+
+.validation-summary-valid {
+    display: none;
+}

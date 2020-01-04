@@ -1,20 +1,23 @@
 ﻿using NewsEngineTemplate.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace NewsEngineTemplate.Controllers
 {
     public class NewsController : Controller
     {
+
+
         private NewsDBContext newsDB = new NewsDBContext();
         private NewsCategoryDBContext categoriesDB = new NewsCategoryDBContext();
 
         // GET: All news list
         public ActionResult Index()
         {
+            Debug.WriteLine("Hello World");
             IQueryable<News> articles = GetNewsArticles();
             ViewBag.news = articles;
 
@@ -88,25 +91,42 @@ namespace NewsEngineTemplate.Controllers
             return View("Create");
         }
 
-        // POST: Send the new news article data.
+        // POST: Receive the new news article form-data.
         [ActionName("new")]
         [HttpPost]
-        public ActionResult Create(News article)
+        public ActionResult Create([Bind(Exclude = "ID")] News article)
         {
             article.PublishDate = DateTime.Now;
-
             try
             {
-                newsDB.NewsArticles.Add(article);
-                newsDB.SaveChanges();
-                TempData["redirectMessage"] = "The article has been published.";
-                return Redirect("/news/article/" + article.ID);
+                Debug.WriteLine(ModelState.IsValid);
+
+                if (ModelState.IsValid)
+                {
+                    newsDB.NewsArticles.Add(article);
+                    newsDB.SaveChanges();
+                    TempData["redirectMessage"] = "The article has been published.";
+                    TempData["redirectMessageClass"] = "success";
+                    return Redirect("/news/article/" + article.ID);
+                }
+                else
+                {
+                    string messages = string.Join("; ", ModelState.Values
+                                        .SelectMany(x => x.Errors)
+                                        .Select(x => x.ErrorMessage));
+                    Debug.WriteLine(messages);
+                    ViewBag.Categories = GetAllCategories();
+                    TempData["redirectMessage"] = "The article has not been published.";
+                    TempData["redirectMessageClass"] = "error";
+                    return View("Create", article);
+                }
             }
             catch (Exception e)
             {
-                ViewBag.news = GetNewsArticles();
+                ViewBag.Categories = GetAllCategories();
                 TempData["redirectMessage"] = "The article has not been published.";
-                return View();
+                TempData["redirectMessageClass"] = "error";
+                return View("Create", article);
             }
         }
 
@@ -142,18 +162,29 @@ namespace NewsEngineTemplate.Controllers
             News article = newsDB.NewsArticles.Find(ID);
             if (TryUpdateModel(article))
             {
-                article.Title = articleMod.Title;
-                article.Content = articleMod.Content;
-                newsDB.SaveChanges();
-                TempData["redirectMessage"] = "The article has been modified.";
-                TempData["redirectMessageClass"] = "success";
+                if (ModelState.IsValid)
+                {
+                    article.Title = articleMod.Title;
+                    article.Content = articleMod.Content;
+                    newsDB.SaveChanges();
+                    TempData["redirectMessage"] = "The article has been modified - invalid ModelState";
+                    TempData["redirectMessageClass"] = "success";
+                    return Redirect("/news/article/" + article.ID);
+                }
+                else
+                {
+                    article.Categories = GetAllCategories();
+                    return View("Update", article);
+                }
             }
             else
             {
-                TempData["redirectMessage"] = "The article has not been modified.";
+                TempData["redirectMessage"] = "The article has not been modified - TryUpdateModel";
                 TempData["redirectMessageClass"] = "danger";
+
+                article.Categories = GetAllCategories();
+                return View("Update", article);
             }
-            return Redirect("/news/article/" + article.ID);
         }
 
         // DELETE: Delete an article of news.

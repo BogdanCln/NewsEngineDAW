@@ -14,11 +14,11 @@ namespace NewsEngineTemplate.Models
         [Key]
         public int ID { get; set; }
 
-        [Required]
-        [MaxLength(30)]
+        [Required(ErrorMessage = "Title is mandatory")]
+        [StringLength(30, ErrorMessage = "Title too long. Maximum allowed is 30 characters.")]
         public string Title { get; set; }
 
-        [Required]
+        [Required (ErrorMessage = "Content is mandatory")]
         public string Content { get; set; }
 
         [Required(ErrorMessage = "Category is mandatory")]
@@ -26,7 +26,6 @@ namespace NewsEngineTemplate.Models
 
         public virtual NewsCategory Category { get; set; }
         public IEnumerable<SelectListItem> Categories { get; set; }
-
 
         public DateTime PublishDate { get; set; }
     }
