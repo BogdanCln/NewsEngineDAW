@@ -19,14 +19,5 @@ namespace NewsEngineTemplate.Models
         public DateTime CreateDate { get; set; }
 
         public virtual ICollection<News> NewsArticles { get; set; }
-
     }
-
-    //public class NewsCategoryDBContext : DbContext
-    //{
-    //    public NewsCategoryDBContext() : base("NewsDBConnectionString") { }
-    //    public DbSet<NewsCategory> NewsCategories { get; set; }
-    //    public DbSet<News> NewsArticles { get; set; }
-
-    //}
 }

@@ -10,8 +10,6 @@ namespace NewsEngineTemplate.Controllers
 {
     public class NewsController : Controller
     {
-
-
         //private NewsDBContext newsDB = new NewsDBContext();
         //private NewsCategoryDBContext categoriesDB = new NewsCategoryDBContext();
 
@@ -115,37 +113,42 @@ namespace NewsEngineTemplate.Controllers
         {
             // Preluam ID-ul utilizatorului curent
             article.UserID = User.Identity.GetUserId();
-
             article.PublishDate = DateTime.Now;
-            try
+
+            //try
+            //{
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    db.NewsArticles.Add(article);
-                    db.SaveChanges();
-                    TempData["redirectMessage"] = "The article has been published.";
-                    TempData["redirectMessageClass"] = "success";
-                    return Redirect("/news/article/" + article.ID);
-                }
-                else
-                {
-                    string messages = string.Join("; ", ModelState.Values
-                                        .SelectMany(x => x.Errors)
-                                        .Select(x => x.ErrorMessage));
-                    Debug.WriteLine(messages);
-                    ViewBag.Categories = GetAllCategories();
-                    TempData["redirectMessage"] = "The article has not been published.";
-                    TempData["redirectMessageClass"] = "error";
-                    return View("Create", article);
-                }
+                db.NewsArticles.Add(article);
+                db.SaveChanges();
+                TempData["redirectMessage"] = "The article has been published.";
+                TempData["redirectMessageClass"] = "success";
+                return Redirect("/news/article/" + article.ID);
             }
-            catch (Exception e)
+            else
             {
+                string messages = string.Join("; ", ModelState.Values
+                                    .SelectMany(x => x.Errors)
+                                    .Select(x => x.ErrorMessage));
+                Debug.WriteLine(messages);
                 ViewBag.Categories = GetAllCategories();
-                TempData["redirectMessage"] = "The article has not been published.";
-                TempData["redirectMessageClass"] = "error";
+                TempData["redirectMessage"] = messages;
+                TempData["redirectMessageClass"] = "danger";
                 return View("Create", article);
             }
+            //}
+            //catch (Exception e)
+            //{
+            //    string messages = string.Join("; ", ModelState.Values
+            //                        .SelectMany(x => x.Errors)
+            //                        .Select(x => x.ErrorMessage));
+            //    Debug.WriteLine(e.Message + messages);
+            //    ViewBag.Categories = GetAllCategories();
+            //    TempData["redirectMessage"] = e.Message + " " + messages;
+            //    TempData["redirectMessageClass"] = "danger";
+            //    return Redirect("/news/new/");
+            //    throw e;
+            //}
         }
 
         [ActionName("edit")]
@@ -177,7 +180,7 @@ namespace NewsEngineTemplate.Controllers
             else
             {
                 TempData["redirectMessage"] = "Permission denied";
-                TempData["redirectMessageClass"] = "error";
+                TempData["redirectMessageClass"] = "danger";
                 return RedirectToAction("Index");
             }
 
@@ -277,5 +280,6 @@ namespace NewsEngineTemplate.Controllers
             // returnam lista de categorii
             return selectList;
         }
+
     }
 }

@@ -1,5 +1,11 @@
 ﻿@model NewsEngineTemplate.Models.NewsCategory
 
+@if (ViewData.ContainsKey("notification"))
+{
+    <h3 class="alert alert-@ViewBag.notificationClass" role="alert">@ViewBag.notification</h3>
+    <br />
+}
+
 <div class="col">
     <div class="d-flex flex-row justify-content-between">
         <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -30,7 +36,7 @@
             </div>
         </div>
     </div>
-    <ul class="list-group mb-3" id="reservations-content">
+    <ul class="list-group mb-3">
         @foreach (NewsEngineTemplate.Models.News article in ViewBag.news)
         {
             @Html.Partial("ArticlePreviewPartial", article, ViewData);

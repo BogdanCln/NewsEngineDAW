@@ -68,6 +68,11 @@ namespace NewsEngineTemplate.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult Create([Bind(Exclude = "CategoryID, CreateDate")]NewsCategory category)
         {
+            ViewBag.isAdmin = User.IsInRole("Administrator");
+            ViewBag.isEditor = User.IsInRole("Editor");
+            ViewBag.isUser = User.IsInRole("User");
+            ViewBag.userID = User.Identity.GetUserId();
+
             category.CreateDate = DateTime.Now;
 
             try
@@ -78,9 +83,11 @@ namespace NewsEngineTemplate.Controllers
                 {
                     db.NewsCategories.Add(category);
                     db.SaveChanges();
+                    ViewBag.news = GetNewsArticlesByCategory(category.CategoryID, null);
                     TempData["redirectMessage"] = "The category has been published.";
                     TempData["redirectMessageClass"] = "success";
-                    return Redirect("/categories/category/" + category.CategoryID);
+
+                    return View("Show", category);
                 }
                 else
                 {
@@ -90,14 +97,14 @@ namespace NewsEngineTemplate.Controllers
                     Debug.WriteLine(messages);
 
                     TempData["redirectMessage"] = "The category has not been published.";
-                    TempData["redirectMessageClass"] = "error";
+                    TempData["redirectMessageClass"] = "danger";
                     return View("Create", category);
                 }
             }
             catch (Exception e)
             {
                 TempData["redirectMessage"] = "The category has not been published.";
-                TempData["redirectMessageClass"] = "error";
+                TempData["redirectMessageClass"] = "danger";
                 return View("Create", category);
             }
         }

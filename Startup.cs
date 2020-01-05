@@ -34,9 +34,9 @@ namespace NewsEngineTemplate
 
                 // se adauga utilizatorul administrator
                 var user = new ApplicationUser();
-                user.UserName = "test@test.test";
-                user.Email = "test@test.test";
-                var adminCreated = UserManager.Create(user, "Qwerty123$");
+                user.UserName = "admin@news.news";
+                user.Email = "admin@news.news";
+                var adminCreated = UserManager.Create(user, "Password!1");
                 if (adminCreated.Succeeded)
                 {
                     UserManager.AddToRole(user.Id, "Administrator");

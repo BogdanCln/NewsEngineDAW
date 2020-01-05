@@ -8,7 +8,7 @@
 
 <li class="list-group-item d-flex justify-content-between lh-condensed bg-dark">
     <div class="container">
-        @using (Html.BeginForm("new", "News", FormMethod.Post, new { @class = "form-group", role = "margin:1em auto; position: relative; width: 100%" }))
+        @using (Html.BeginForm("new", "news", FormMethod.Post, new { @class = "form-group", role = "margin:1em auto; position: relative; width: 100%" }))
         {
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 

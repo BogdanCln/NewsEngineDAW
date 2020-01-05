@@ -1,0 +1,12 @@
+﻿<div class="media text-muted pt-3 d-flex flex-row justify-content-center align-content-center border-bottom">
+    <p class="media-body pb-3 mb-0 small lh-125 border-gray">
+        <span class="d-block text-gray-dark">Username: <strong>@Model.UserName</strong></span>
+        <span class="d-block text-gray-dark">Email: <strong>@Model.Email</strong></span>
+
+        @if (@Model.PhoneNumber != null)
+        {
+            <span class="d-block text-gray-dark">Phone: @Model.PhoneNumber</span>
+        }
+    </p>
+    <a class="btn btn-outline-warning" href="/users/edit/@Model.Id"><i class="fa fa-user-edit"></i></a>
+</div>
