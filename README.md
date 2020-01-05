@@ -15,7 +15,7 @@ unde pot fi sortate dupa diferite criterii: data aparitiei si alfabetic. (0.5p)
 > editorii se ocupa de publicarea stirilor noi si pot vizualiza, edita, sterge
 propriile stiri. (1.0p). 
 
-- De asemenea, editorii pot prelua stiri de pe alte site-uri
+> De asemenea, editorii pot prelua stiri de pe alte site-uri
 de stiri, specificand doar titlul, headline-ul si o poza (sub forma de thumbnail).
 (0.5p)
 - utilizatorii pot adauga comentarii la stirile aparute, isi pot sterge si edita
