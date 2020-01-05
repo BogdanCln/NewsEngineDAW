@@ -27,6 +27,18 @@ namespace NewsEngineTemplate.Controllers
             ViewBag.isUser = User.IsInRole("User");
             ViewBag.userID = User.Identity.GetUserId();
 
+            if (TempData.ContainsKey("redirectMessage"))
+            {
+                ViewBag.notification = TempData["redirectMessage"].ToString();
+                if (TempData.ContainsKey("redirectMessageClass"))
+                {
+                    ViewBag.notificationClass = TempData["redirectMessageClass"].ToString();
+                }
+                else
+                {
+                    ViewBag.notificationClass = "info";
+                }
+            }
             return View();
         }
 
@@ -40,6 +52,19 @@ namespace NewsEngineTemplate.Controllers
             ViewBag.isEditor = User.IsInRole("Editor");
             ViewBag.isUser = User.IsInRole("User");
             ViewBag.userID = User.Identity.GetUserId();
+
+            if (TempData.ContainsKey("redirectMessage"))
+            {
+                ViewBag.notification = TempData["redirectMessage"].ToString();
+                if (TempData.ContainsKey("redirectMessageClass"))
+                {
+                    ViewBag.notificationClass = TempData["redirectMessageClass"].ToString();
+                }
+                else
+                {
+                    ViewBag.notificationClass = "info";
+                }
+            }
 
             try
             {
@@ -59,6 +84,24 @@ namespace NewsEngineTemplate.Controllers
         [ActionName("new")]
         public ActionResult Create()
         {
+            ViewBag.isAdmin = User.IsInRole("Administrator");
+            ViewBag.isEditor = User.IsInRole("Editor");
+            ViewBag.isUser = User.IsInRole("User");
+            ViewBag.userID = User.Identity.GetUserId();
+
+            if (TempData.ContainsKey("redirectMessage"))
+            {
+                ViewBag.notification = TempData["redirectMessage"].ToString();
+                if (TempData.ContainsKey("redirectMessageClass"))
+                {
+                    ViewBag.notificationClass = TempData["redirectMessageClass"].ToString();
+                }
+                else
+                {
+                    ViewBag.notificationClass = "info";
+                }
+            }
+
             return View("Create");
         }
 
@@ -70,6 +113,11 @@ namespace NewsEngineTemplate.Controllers
         {
             category.CreateDate = DateTime.Now;
 
+            ViewBag.isAdmin = User.IsInRole("Administrator");
+            ViewBag.isEditor = User.IsInRole("Editor");
+            ViewBag.isUser = User.IsInRole("User");
+            ViewBag.userID = User.Identity.GetUserId();
+
             try
             {
                 Debug.WriteLine(ModelState.IsValid);
@@ -80,7 +128,8 @@ namespace NewsEngineTemplate.Controllers
                     db.SaveChanges();
                     TempData["redirectMessage"] = "The category has been published.";
                     TempData["redirectMessageClass"] = "success";
-                    return Redirect("/categories/category/" + category.CategoryID);
+
+                    return Redirect("/categories");
                 }
                 else
                 {
@@ -89,15 +138,15 @@ namespace NewsEngineTemplate.Controllers
                                         .Select(x => x.ErrorMessage));
                     Debug.WriteLine(messages);
 
-                    TempData["redirectMessage"] = "The category has not been published.";
-                    TempData["redirectMessageClass"] = "error";
+                    TempData["redirectMessage"] = messages + " The category has not been published.";
+                    TempData["redirectMessageClass"] = "danger";
                     return View("Create", category);
                 }
             }
             catch (Exception e)
             {
                 TempData["redirectMessage"] = "The category has not been published.";
-                TempData["redirectMessageClass"] = "error";
+                TempData["redirectMessageClass"] = "danger";
                 return View("Create", category);
             }
         }
@@ -151,6 +200,9 @@ namespace NewsEngineTemplate.Controllers
             }
             catch (Exception e) { }
             // #TODO
+
+            TempData["redirectMessage"] = "The category has been deleted.";
+            TempData["redirectMessageClass"] = "warning";
             return Redirect("/categories");
         }
 

@@ -18,7 +18,7 @@ namespace NewsEngineTemplate.Models
         public virtual ApplicationUser User { get; set; }
 
         [Required(ErrorMessage = "Title is mandatory")]
-        [StringLength(30, ErrorMessage = "Title too long. Maximum allowed is 30 characters.")]
+        [StringLength(80, ErrorMessage = "Title too long. Maximum allowed is 80 characters.")]
         public string Title { get; set; }
 
         [Required (ErrorMessage = "Content is mandatory")]
@@ -32,12 +32,4 @@ namespace NewsEngineTemplate.Models
 
         public DateTime PublishDate { get; set; }
     }
-
-    //public class NewsDBContext : DbContext
-    //{
-    //    public NewsDBContext() : base("NewsDBConnectionString") { }
-    //    public DbSet<News> NewsArticles { get; set; }
-    //    public DbSet<NewsCategory> Categories { get; set; }
-
-    //}
 }

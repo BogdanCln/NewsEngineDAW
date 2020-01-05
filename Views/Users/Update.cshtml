@@ -1,0 +1,51 @@
+﻿@model NewsEngineTemplate.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "Edit user";
+}
+<div class="list-group-item d-flex justify-content-between lh-condensed bg-dark">
+    <div class="container">
+        <div class="container">
+
+            @using (Html.BeginForm("edit", "Users", FormMethod.Post, new { @class = "form-group", role = "margin:1em auto; position: relative; width: 100%" }))
+            {
+                @Html.HttpMethodOverride(HttpVerbs.Put)
+                @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                @Html.HiddenFor(m => m.Id)
+
+                <div class="form-group row">
+                    @Html.Label("UserName", "Username", new { @class = "col-2 col-form-label" })
+                    <div class="col-10">
+                        @Html.TextBox("UserName", Model.UserName, new { @class = "form-control article-title-input", value = Model.UserName })
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    @Html.Label("Email", "Email ", new { @class = "col-2 col-form-label" })
+                    <div class="col-10">
+                        @Html.TextBox("Email", Model.Email, new { @class = "form-control article-title-input", value = Model.Email })
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    @Html.Label("PhoneNumber", "Phone", new { @class = "col-2 col-form-label" })
+                    <div class="col-10">
+                        @Html.TextBox("PhoneNumber", Model.PhoneNumber, new { @class = "form-control article-title-input", value = Model.PhoneNumber })
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    @Html.Label("newRole", "Role", new { @class = "col-2 col-form-label" })
+                    <div class="col-10">
+                        @Html.DropDownList("newRole", new SelectList(Model.AllRoles, "Value", "Text", (string)ViewBag.userRole), null, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-outline-success btn-lg">
+                    <i class="fa fa-check"></i>
+                </button>
+            }
+        </div>
+    </div>
+</div>

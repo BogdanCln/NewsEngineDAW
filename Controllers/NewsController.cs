@@ -4,24 +4,21 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
 namespace NewsEngineTemplate.Controllers
 {
     public class NewsController : Controller
     {
-
-
-        //private NewsDBContext newsDB = new NewsDBContext();
-        //private NewsCategoryDBContext categoriesDB = new NewsCategoryDBContext();
-
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: All news list
         //[Authorize(Roles = "User,Editor,Administrator")]
         public ActionResult Index()
         {
-            List<News> articles = GetNewsArticles();
+            List<News> articles = GetNewsArticles(null);
             ViewBag.news = articles;
 
             if (TempData.ContainsKey("redirectMessage"))
@@ -45,6 +42,18 @@ namespace NewsEngineTemplate.Controllers
             return View();
         }
 
+        public ActionResult Search(string searchExp)
+        {
+            Debug.WriteLine("?Search for " + searchExp);
+            List<News> articles = GetNewsArticles(searchExp);
+            ViewBag.news = articles;
+            ViewBag.isAdmin = User.IsInRole("Administrator");
+            ViewBag.isEditor = User.IsInRole("Editor");
+            ViewBag.isUser = User.IsInRole("User");
+            ViewBag.userID = User.Identity.GetUserId();
+
+            return View("Index");
+        }
 
         // GET: All news list or a single news article with ID specified as request parameter
         [ActionName("article")]
@@ -106,6 +115,28 @@ namespace NewsEngineTemplate.Controllers
 
             return View("Create");
         }
+        // GET: View for adding an external news article.
+        [ActionName("new-external")]
+        [Authorize(Roles = "Editor,Administrator")]
+        public ActionResult CreateExternal()
+        {
+            ViewBag.Categories = GetAllCategories();
+
+            if (TempData.ContainsKey("redirectMessage"))
+            {
+                ViewBag.notification = TempData["redirectMessage"].ToString();
+                if (TempData.ContainsKey("redirectMessageClass"))
+                {
+                    ViewBag.notificationClass = TempData["redirectMessageClass"].ToString();
+                }
+                else
+                {
+                    ViewBag.notificationClass = "info";
+                }
+            }
+
+            return View("CreateExternal");
+        }
 
         // POST: Receive the new news article form-data.
         [HttpPost]
@@ -113,10 +144,9 @@ namespace NewsEngineTemplate.Controllers
         [Authorize(Roles = "Editor,Administrator")]
         public ActionResult Create([Bind(Exclude = "ID, PublishDate")] News article)
         {
-            // Preluam ID-ul utilizatorului curent
             article.UserID = User.Identity.GetUserId();
-
             article.PublishDate = DateTime.Now;
+
             try
             {
                 if (ModelState.IsValid)
@@ -133,18 +163,91 @@ namespace NewsEngineTemplate.Controllers
                                         .SelectMany(x => x.Errors)
                                         .Select(x => x.ErrorMessage));
                     Debug.WriteLine(messages);
+                    TempData["redirectMessage"] = messages;
+                    TempData["redirectMessageClass"] = "danger";
+
                     ViewBag.Categories = GetAllCategories();
-                    TempData["redirectMessage"] = "The article has not been published.";
-                    TempData["redirectMessageClass"] = "error";
                     return View("Create", article);
                 }
             }
             catch (Exception e)
             {
+                string messages = string.Join("; ", ModelState.Values
+                                    .SelectMany(x => x.Errors)
+                                    .Select(x => x.ErrorMessage));
+                Debug.WriteLine(e.Message + messages);
                 ViewBag.Categories = GetAllCategories();
-                TempData["redirectMessage"] = "The article has not been published.";
-                TempData["redirectMessageClass"] = "error";
-                return View("Create", article);
+                TempData["redirectMessage"] = e.Message + " " + messages;
+                TempData["redirectMessageClass"] = "danger";
+                return Redirect("/news/new/");
+            }
+        }
+
+        // POST: Receive the external news article form-data.
+        [HttpPost]
+        [ActionName("new-external")]
+        [Authorize(Roles = "Editor,Administrator")]
+        public ActionResult CreateExternal(string URI)
+        {
+            // Only BBC.com scraping for now
+            if (parseBBCURI(URI) == null)
+            {
+                Debug.WriteLine("Invalid BBC URI");
+
+                TempData["redirectMessage"] = "Invalid BBC URI";
+                TempData["redirectMessageClass"] = "warning";
+                return Redirect("/news/new-external");
+            }
+            Debug.WriteLine(parseBBCURI(URI));
+
+            string htmlCode = "";
+            using (WebClient client = new WebClient())
+            {
+                try
+                {
+                    htmlCode = client.DownloadString(parseBBCURI(URI));
+
+                    TempData["redirectMessage"] = "Got article data from BBC";
+                    TempData["redirectMessageClass"] = "success";
+
+                    //Debug.WriteLine(htmlCode);
+                    News article = new News();
+
+                    string titlePattern = @"(\""headline.*?\"","")";
+                    string contentPattern = @"(\""description.*?\"","")";
+
+                    foreach (Match m in Regex.Matches(htmlCode, titlePattern))
+                    {
+                        if (m.Value.Length > 15)
+                        {
+                            article.Title = m.Value.Substring(12);
+                            int endCut = article.Title.Length - 3;
+                            article.Title = article.Title.Remove(endCut);
+                            article.Title = article.Title + " [BBC.com]";
+                        }
+                    }
+
+                    foreach (Match m in Regex.Matches(htmlCode, contentPattern))
+                    {
+                        if (m.Value.Length > 18)
+                        {
+                            article.Content = m.Value.Substring(15);
+                            int endCut = article.Content.Length - 3;
+                            article.Content = article.Content.Remove(endCut);
+                            article.Content = article.Content + "\nRead the full story on " + URI;
+                            article.Content = article.Content.Replace("\\n", System.Environment.NewLine);
+                        }
+                    }
+
+                    ViewBag.Categories = GetAllCategories();
+                    return View("Create", article);
+                }
+                catch (Exception err)
+                {
+                    TempData["redirectMessage"] = err.Message;
+                    TempData["redirectMessageClass"] = "warning";
+                    return Redirect("/news/new-external");
+                }
             }
         }
 
@@ -177,7 +280,7 @@ namespace NewsEngineTemplate.Controllers
             else
             {
                 TempData["redirectMessage"] = "Permission denied";
-                TempData["redirectMessageClass"] = "error";
+                TempData["redirectMessageClass"] = "danger";
                 return RedirectToAction("Index");
             }
 
@@ -250,9 +353,13 @@ namespace NewsEngineTemplate.Controllers
         }
 
         [NonAction]
-        public List<News> GetNewsArticles()
+        public List<News> GetNewsArticles(string searchExp)
         {
-            var articles = from news in db.NewsArticles orderby news.PublishDate descending select news;
+            IQueryable<News> articles = from news in db.NewsArticles orderby news.PublishDate descending select news;
+            if (searchExp != null)
+            {
+                articles = articles.Where(a => a.Title.Contains(searchExp));
+            }
             return articles.ToList();
         }
 
@@ -277,5 +384,33 @@ namespace NewsEngineTemplate.Controllers
             // returnam lista de categorii
             return selectList;
         }
+
+        [NonAction]
+        private string parseBBCURI(string input)
+        {
+            if (input.Substring(0, 8) == "https://")
+            {
+                input = input.Substring(8);
+            }
+            else if (input.Substring(0, 7) == "http://")
+            {
+                input = input.Substring(7);
+            }
+
+
+            if (input.Substring(0, 4) == "www.")
+            {
+                input = input.Substring(4);
+            }
+
+            if (input.Substring(0, 7) != "bbc.com")
+            {
+                return null;
+            }
+            else
+                return "http://" + input;
+
+        }
+
     }
 }
