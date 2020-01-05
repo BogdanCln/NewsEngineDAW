@@ -8,7 +8,12 @@
 
         <div>
             <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                <div><a class="btn btn-success mr-2" href="/news/new"><i class="fas fa-plus"></i></a></div>
+                <div><a class="btn btn-success" href="/categories"><i class="fas fa-list-alt"></i> Categories</a></div>
+
+                @if (ViewBag.isAdmin || ViewBag.isEditor)
+                {
+                    <div class="ml-2"><a class="btn btn-success mr-2" href="/news/new"><i class="fas fa-plus"></i></a></div>
+                }
 
                 <div class="dropdown show">
                     <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownSort" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -26,28 +31,9 @@
         </div>
     </div>
     <ul class="list-group mb-3" id="reservations-content">
-        @foreach (var article in ViewBag.news)
+        @foreach (NewsEngineTemplate.Models.News article in ViewBag.news)
         {
-            <li class="article-container list-group-item d-flex justify-content-between lh-condensed bg-dark">
-                <div class="article-content">
-                    <h4 class="mb-1 article-title">@article.Title</h4>
-                    <small class="article-content">
-                        @article.Content.Substring(0, Math.Min(article.Content.Length, 600))...
-                    </small>
-                    <h6 class="mt-1 article-id mt-3">@article.PublishDate | Bogdan Calina</h6>
-
-                </div>
-                <div class="reservation-buttons">
-                    <a class="btn btn-outline-dark btn-lg" href="/news/edit/@article.ID">
-                        <i class="fas fa-edit"></i>
-                    </a>
-
-                    <a class="btn btn-outline-dark btn-lg" href="/news/article/@article.ID">
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-                <input type="checkbox" name="delete" class="delete-reservation-checkbox" style="display: none;">
-            </li>
+            @Html.Partial("ArticlePreviewPartial", article, ViewData);
         }
     </ul>
 </div>

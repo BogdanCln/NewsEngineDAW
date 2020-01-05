@@ -21,7 +21,7 @@ namespace NewsEngineTemplate.Controllers
         //[Authorize(Roles = "User,Editor,Administrator")]
         public ActionResult Index()
         {
-            IQueryable<News> articles = GetNewsArticles();
+            List<News> articles = GetNewsArticles();
             ViewBag.news = articles;
 
             if (TempData.ContainsKey("redirectMessage"))
@@ -36,6 +36,11 @@ namespace NewsEngineTemplate.Controllers
                     ViewBag.notificationClass = "info";
                 }
             }
+
+            ViewBag.isAdmin = User.IsInRole("Administrator");
+            ViewBag.isEditor = User.IsInRole("Editor");
+            ViewBag.isUser = User.IsInRole("User");
+            ViewBag.userID = User.Identity.GetUserId();
 
             return View();
         }
@@ -63,6 +68,12 @@ namespace NewsEngineTemplate.Controllers
                         ViewBag.notificationClass = "info";
                     }
                 }
+
+                ViewBag.isAdmin = User.IsInRole("Administrator");
+                ViewBag.isEditor = User.IsInRole("Editor");
+                ViewBag.isUser = User.IsInRole("User");
+                ViewBag.userID = User.Identity.GetUserId();
+
                 return View("Show", article);
             }
             catch (Exception e)
@@ -186,7 +197,7 @@ namespace NewsEngineTemplate.Controllers
                     article.Title = articleMod.Title;
                     article.Content = articleMod.Content;
                     db.SaveChanges();
-                    TempData["redirectMessage"] = "The article has been modified - invalid ModelState";
+                    TempData["redirectMessage"] = "The article has been modified";
                     TempData["redirectMessageClass"] = "success";
                     return Redirect("/news/article/" + article.ID);
                 }
@@ -215,26 +226,34 @@ namespace NewsEngineTemplate.Controllers
             try
             {
                 News article = db.NewsArticles.Find(ID);
-                db.NewsArticles.Remove(article);
-                db.SaveChanges();
+                if (article.UserID == User.Identity.GetUserId() || User.IsInRole("Administrator"))
+                {
+                    db.NewsArticles.Remove(article);
+                    db.SaveChanges();
 
-                TempData["redirectMessage"] = "The article has been deleted.";
-                TempData["redirectMessageClass"] = "info";
+                    TempData["redirectMessage"] = "The article has been deleted.";
+                    TempData["redirectMessageClass"] = "info";
+                }
+                else
+                {
+                    TempData["redirectMessage"] = "Permission denied.";
+                    TempData["redirectMessageClass"] = "danger";
+                }
             }
             catch (Exception e)
             {
                 TempData["redirectMessage"] = "The article has not been deleted.";
                 TempData["redirectMessageClass"] = "danger";
             }
-
             return Redirect("/news");
+
         }
 
         [NonAction]
-        public IQueryable<News> GetNewsArticles()
+        public List<News> GetNewsArticles()
         {
             var articles = from news in db.NewsArticles orderby news.PublishDate descending select news;
-            return articles;
+            return articles.ToList();
         }
 
         [NonAction]

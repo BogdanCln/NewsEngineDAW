@@ -48,11 +48,6 @@ hr.sectionsSplit {
     background-color: var(--coffee)
 }
 
-#reservation-prototype,
-#resource-prototype {
-    display: none !important;
-}
-
 #notifications-container {
     position: fixed;
     right: 1vw;
@@ -63,7 +58,6 @@ hr.sectionsSplit {
 
 .article-content {
     min-width: 70%;
-    max-width: 90%;
 }
 
 .alert-primary {
@@ -83,7 +77,7 @@ hr.sectionsSplit {
     display: none;
 }
 
-.delete-reservation-checkbox {
+.delete-article-checkbox {
     -webkit-transform: scale(2);
     transform: scale(2);
     -o-transform: scale(2);
@@ -101,7 +95,7 @@ hr.sectionsSplit {
     margin-top: 1em;
 }
 
-.reservation-buttons {
+.article-buttons {
     display: flex;
     align-items: center;
 }

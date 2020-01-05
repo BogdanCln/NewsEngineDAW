@@ -11,7 +11,13 @@
         </h4>
 
         <div>
-            <div><a class="btn btn-success" href="/categories/new"><i class="fas fa-plus"></i></a></div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div><a class="btn btn-success" href="/categories"><i class="fas fa-list-alt"></i> Categories</a></div>
+                @if (ViewBag.isAdmin)
+                {
+                    <div><a class="btn btn-success ml-2" href="/categories/new"><i class="fas fa-plus"></i></a></div>
+                }
+            </div>
         </div>
     </div>
     <ul class="list-group mb-3" id="reservations-content">
@@ -25,18 +31,21 @@
                     </small>
 
                 </div>
-                <div class="reservation-buttons">
-                    <a class="btn btn-outline-dark btn-lg" href="/categories/edit/@category.CategoryID">
-                        <i class="fas fa-edit"></i>
-                        <span>Edit</span>
-                    </a>
+                <div class="article-buttons">
+                    @if (ViewBag.isAdmin)
+                    {
+                        <a class="btn btn-outline-dark btn-lg" href="/categories/edit/@category.CategoryID">
+                            <i class="fas fa-edit"></i>
+                            <span>Edit</span>
+                        </a>
+                    }
 
                     <a class="btn btn-outline-dark btn-lg" href="/categories/category/@category.CategoryID">
-                        <i class="fas fa-arrow-right"></i> 
+                        <i class="fas fa-arrow-right"></i>
                         <span>Browse</span>
                     </a>
                 </div>
-                <input type="checkbox" name="delete" class="delete-reservation-checkbox" style="display: none;">
+                <input type="checkbox" name="delete" class="delete-article-checkbox" style="display: none;">
             </li>
 
         }

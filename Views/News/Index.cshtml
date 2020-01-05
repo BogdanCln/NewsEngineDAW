@@ -19,28 +19,9 @@
         </div>
     </div>
     <ul class="list-group mb-3" id="reservations-content">
-        @foreach (var article in ViewBag.news)
+        @foreach (NewsEngineTemplate.Models.News article in ViewBag.news)
         {
-            <li class="article-container list-group-item d-flex justify-content-between lh-condensed bg-dark">
-                <div class="article-content">
-                    <h4 class="mb-1 article-title">@article.Title</h4>
-                    <small class="article-content">
-                        @article.Content.Substring(0, Math.Min(article.Content.Length, 600))...
-                    </small>
-                    <h6 class="mt-1 article-id mt-3">@article.PublishDate</h6>
-
-                </div>
-                <div class="reservation-buttons">
-                    <a class="btn btn-outline-dark btn-lg" href="/news/edit/@article.ID">
-                        <i class="fas fa-edit"></i>
-                    </a>
-
-                    <a class="btn btn-outline-dark btn-lg" href="/news/article/@article.ID">
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-                <input type="checkbox" name="delete" class="delete-reservation-checkbox" style="display: none;">
-            </li>
+            @Html.Partial("ArticlePreviewPartial", article, ViewData);
         }
     </ul>
 </div>

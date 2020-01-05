@@ -1,4 +1,5 @@
-﻿using NewsEngineTemplate.Models;
+﻿using Microsoft.AspNet.Identity;
+using NewsEngineTemplate.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,6 +21,12 @@ namespace NewsEngineTemplate.Controllers
         {
             IQueryable<NewsCategory> categories = GetNewsCategories();
             ViewBag.categories = categories;
+
+            ViewBag.isAdmin = User.IsInRole("Administrator");
+            ViewBag.isEditor = User.IsInRole("Editor");
+            ViewBag.isUser = User.IsInRole("User");
+            ViewBag.userID = User.Identity.GetUserId();
+
             return View();
         }
 
@@ -29,6 +36,11 @@ namespace NewsEngineTemplate.Controllers
         [Authorize(Roles = "User,Editor,Administrator")]
         public ActionResult Show(int ID, string sortBy)
         {
+            ViewBag.isAdmin = User.IsInRole("Administrator");
+            ViewBag.isEditor = User.IsInRole("Editor");
+            ViewBag.isUser = User.IsInRole("User");
+            ViewBag.userID = User.Identity.GetUserId();
+
             try
             {
                 NewsCategory category = db.NewsCategories.Find(ID);
@@ -149,25 +161,25 @@ namespace NewsEngineTemplate.Controllers
             return queryResult;
         }
 
-        public IQueryable<News> GetNewsArticlesByCategory(int catID, string sortBy)
+        public List<News> GetNewsArticlesByCategory(int catID, string sortBy)
         {
-            IQueryable<News> articles;
+            List<News> articles;
             switch (sortBy)
             {
                 case "date-asc":
-                    articles = from news in db.NewsArticles where news.Category.CategoryID == catID orderby news.PublishDate ascending select news;
+                    articles = (from news in db.NewsArticles where news.Category.CategoryID == catID orderby news.PublishDate ascending select news).ToList();
                     break;
                 case "date-desc":
-                    articles = from news in db.NewsArticles where news.Category.CategoryID == catID orderby news.PublishDate descending select news;
+                    articles = (from news in db.NewsArticles where news.Category.CategoryID == catID orderby news.PublishDate descending select news).ToList();
                     break;
                 case "name-asc":
-                    articles = from news in db.NewsArticles where news.Category.CategoryID == catID orderby news.Title ascending select news;
+                    articles = (from news in db.NewsArticles where news.Category.CategoryID == catID orderby news.Title ascending select news).ToList();
                     break;
                 case "name-desc":
-                    articles = from news in db.NewsArticles where news.Category.CategoryID == catID orderby news.Title descending select news;
+                    articles = (from news in db.NewsArticles where news.Category.CategoryID == catID orderby news.Title descending select news).ToList();
                     break;
                 default:
-                    articles = from news in db.NewsArticles where news.Category.CategoryID == catID orderby news.PublishDate descending select news;
+                    articles = (from news in db.NewsArticles where news.Category.CategoryID == catID orderby news.PublishDate descending select news).ToList();
                     break;
             }
             return articles;

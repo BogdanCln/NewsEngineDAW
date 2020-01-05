@@ -47,10 +47,6 @@ hr.sectionsSplit {
     background-color: var(--coffee)
 }
 
-#reservation-prototype,
-#resource-prototype {
-    display: none !important;
-}
 
 #notifications-container {
     position: fixed;
