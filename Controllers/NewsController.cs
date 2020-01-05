@@ -1,4 +1,5 @@
-﻿using NewsEngineTemplate.Models;
+﻿using Microsoft.AspNet.Identity;
+using NewsEngineTemplate.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,10 +12,13 @@ namespace NewsEngineTemplate.Controllers
     {
 
 
-        private NewsDBContext newsDB = new NewsDBContext();
-        private NewsCategoryDBContext categoriesDB = new NewsCategoryDBContext();
+        //private NewsDBContext newsDB = new NewsDBContext();
+        //private NewsCategoryDBContext categoriesDB = new NewsCategoryDBContext();
+
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: All news list
+        //[Authorize(Roles = "User,Editor,Administrator")]
         public ActionResult Index()
         {
             IQueryable<News> articles = GetNewsArticles();
@@ -39,11 +43,12 @@ namespace NewsEngineTemplate.Controllers
 
         // GET: All news list or a single news article with ID specified as request parameter
         [ActionName("article")]
+        [Authorize(Roles = "User,Editor,Administrator")]
         public ActionResult Show(int ID)
         {
             try
             {
-                News article = newsDB.NewsArticles.Find(ID);
+                News article = db.NewsArticles.Find(ID);
                 article.Categories = GetAllCategories();
 
                 if (TempData.ContainsKey("redirectMessage"))
@@ -70,6 +75,7 @@ namespace NewsEngineTemplate.Controllers
 
         // GET: View for adding a news article.
         [ActionName("new")]
+        [Authorize(Roles = "Editor,Administrator")]
         public ActionResult Create()
         {
             ViewBag.Categories = GetAllCategories();
@@ -91,17 +97,21 @@ namespace NewsEngineTemplate.Controllers
         }
 
         // POST: Receive the new news article form-data.
-        [ActionName("new")]
         [HttpPost]
+        [ActionName("new")]
+        [Authorize(Roles = "Editor,Administrator")]
         public ActionResult Create([Bind(Exclude = "ID, PublishDate")] News article)
         {
+            // Preluam ID-ul utilizatorului curent
+            article.UserID = User.Identity.GetUserId();
+
             article.PublishDate = DateTime.Now;
             try
             {
                 if (ModelState.IsValid)
                 {
-                    newsDB.NewsArticles.Add(article);
-                    newsDB.SaveChanges();
+                    db.NewsArticles.Add(article);
+                    db.SaveChanges();
                     TempData["redirectMessage"] = "The article has been published.";
                     TempData["redirectMessageClass"] = "success";
                     return Redirect("/news/article/" + article.ID);
@@ -130,9 +140,10 @@ namespace NewsEngineTemplate.Controllers
         [ActionName("edit")]
         [HttpGet]
         // GET: View for editing a news article
+        [Authorize(Roles = "Editor,Administrator")]
         public ActionResult Update(int ID)
         {
-            News article = newsDB.NewsArticles.Find(ID);
+            News article = db.NewsArticles.Find(ID);
             article.Categories = GetAllCategories();
 
             if (TempData.ContainsKey("redirectMessage"))
@@ -148,22 +159,33 @@ namespace NewsEngineTemplate.Controllers
                 }
             }
 
-            return View("Update", article);
+            if (article.UserID == User.Identity.GetUserId() || User.IsInRole("Administrator"))
+            {
+                return View("Update", article);
+            }
+            else
+            {
+                TempData["redirectMessage"] = "Permission denied";
+                TempData["redirectMessageClass"] = "error";
+                return RedirectToAction("Index");
+            }
+
         }
 
         // PUT: Send the updated news article data.
         [ActionName("edit")]
         [HttpPut]
+        [Authorize(Roles = "Editor,Administrator")]
         public ActionResult Update(int ID, News articleMod)
         {
-            News article = newsDB.NewsArticles.Find(ID);
+            News article = db.NewsArticles.Find(ID);
             if (TryUpdateModel(article))
             {
                 if (ModelState.IsValid)
                 {
                     article.Title = articleMod.Title;
                     article.Content = articleMod.Content;
-                    newsDB.SaveChanges();
+                    db.SaveChanges();
                     TempData["redirectMessage"] = "The article has been modified - invalid ModelState";
                     TempData["redirectMessageClass"] = "success";
                     return Redirect("/news/article/" + article.ID);
@@ -187,13 +209,14 @@ namespace NewsEngineTemplate.Controllers
         // DELETE: Delete an article of news.
         [ActionName("delete")]
         [HttpDelete]
+        [Authorize(Roles = "Editor,Administrator")]
         public ActionResult Delete(int ID)
         {
             try
             {
-                News article = newsDB.NewsArticles.Find(ID);
-                newsDB.NewsArticles.Remove(article);
-                newsDB.SaveChanges();
+                News article = db.NewsArticles.Find(ID);
+                db.NewsArticles.Remove(article);
+                db.SaveChanges();
 
                 TempData["redirectMessage"] = "The article has been deleted.";
                 TempData["redirectMessageClass"] = "info";
@@ -210,7 +233,7 @@ namespace NewsEngineTemplate.Controllers
         [NonAction]
         public IQueryable<News> GetNewsArticles()
         {
-            var articles = from news in newsDB.NewsArticles orderby news.PublishDate descending select news;
+            var articles = from news in db.NewsArticles orderby news.PublishDate descending select news;
             return articles;
         }
 
@@ -220,7 +243,7 @@ namespace NewsEngineTemplate.Controllers
         {
             var selectList = new List<SelectListItem>();
 
-            var categories = from cat in categoriesDB.NewsCategories
+            var categories = from cat in db.NewsCategories
                              select cat;
 
             foreach (var category in categories)

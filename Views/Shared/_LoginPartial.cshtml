@@ -8,7 +8,7 @@
         <div class="d-flex flex-row justify-content-between">
             <div>
                 <span class="navbar-brand mb-0 h1">
-                    @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class="text-success" })
+                    @Html.ActionLink("Welcome " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class="text-success" })
                 </span>
             </div>
             <div>

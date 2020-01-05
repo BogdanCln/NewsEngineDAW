@@ -1,6 +1,12 @@
 ﻿
 @model NewsEngineTemplate.Models.NewsCategory
 
+@if (ViewData.ContainsKey("notification"))
+{
+    <h3 class="alert alert-@ViewBag.notificationClass" role="alert">@ViewBag.notification</h3>
+    <br />
+}
+
 @using (Html.BeginForm("new", "NewsCategory", FormMethod.Post, new { @class = "form-group", role = "margin:1em auto; position: relative; width: 100%" }))
 {
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })

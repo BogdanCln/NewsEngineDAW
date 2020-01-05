@@ -13,6 +13,9 @@
         <div class="col">
             <p>@Model.Content</p>
         </div>
+
+        <h6 class="mt-1 article-id mt-3">@Model.PublishDate | @Model.User.UserName</h6>
+
         <div class="d-flex flex-row">
             <a href="/news/edit/@Model.ID">
                 <button class="btn btn-outline-warning btn-lg mx-2">
@@ -25,8 +28,8 @@
                     <i class="fas fa-trash"></i>
                 </button>
                 @*
-                    #TODO: Bootstrap modal to confirm action
-                    #TODO: Category edit history
+                #TODO: Bootstrap modal to confirm action
+                #TODO: Category edit history
                 *@
             </form>
         </div>

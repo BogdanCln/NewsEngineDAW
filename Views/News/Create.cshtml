@@ -12,6 +12,8 @@
         {
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
+            @Html.HiddenFor(m => m.UserID)
+
             @Html.HiddenFor(m => m.ID)
             @Html.Hidden("Date", DateTime.Now, new { @class = "form-control" })
 

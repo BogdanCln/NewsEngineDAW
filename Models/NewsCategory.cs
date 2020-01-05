@@ -22,11 +22,11 @@ namespace NewsEngineTemplate.Models
 
     }
 
-    public class NewsCategoryDBContext : DbContext
-    {
-        public NewsCategoryDBContext() : base("NewsDBConnectionString") { }
-        public DbSet<NewsCategory> NewsCategories { get; set; }
-        public DbSet<News> NewsArticles { get; set; }
+    //public class NewsCategoryDBContext : DbContext
+    //{
+    //    public NewsCategoryDBContext() : base("NewsDBConnectionString") { }
+    //    public DbSet<NewsCategory> NewsCategories { get; set; }
+    //    public DbSet<News> NewsArticles { get; set; }
 
-    }
+    //}
 }

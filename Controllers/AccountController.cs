@@ -155,6 +155,11 @@ namespace NewsEngineTemplate.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    if (model.Email.Contains("@bogdan.codes"))
+                        UserManager.AddToRole(user.Id, "Editor");
+                    else
+                        UserManager.AddToRole(user.Id, "User");
+
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771

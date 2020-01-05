@@ -25,6 +25,9 @@ namespace NewsEngineTemplate.Models
         {
         }
 
+        public DbSet<News> NewsArticles { get; set; }
+        public DbSet<NewsCategory> NewsCategories { get; set; }
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();

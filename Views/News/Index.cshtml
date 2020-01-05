@@ -5,7 +5,7 @@
 
 <div class="col">
     <div class="d-flex flex-row justify-content-between">
-        <div><a class="btn btn-success" href="/news/new"><i class="fas fa-plus"></i></a></div>
+        <div><a class="btn btn-success" href="/news/new"><i class="fas fa-plus"></i> New article</a></div>
         
         <h4 class="d-flex justify-content-between align-items-center mb-3">
             Latest Articles
@@ -13,7 +13,7 @@
         
         <div>
             <h4 class="d-flex justify-content-between align-items-center mb-3">
-                <div><a class="btn btn-success" href="/categories"><i class="fas fa-list-alt"></i></a></div>
+                <div><a class="btn btn-success" href="/categories"><i class="fas fa-list-alt"></i> Categories</a></div>
 
             </h4>
         </div>
@@ -27,7 +27,7 @@
                     <small class="article-content">
                         @article.Content.Substring(0, Math.Min(article.Content.Length, 600))...
                     </small>
-                    <h6 class="mt-1 article-id mt-3">@article.PublishDate | Bogdan Calina</h6>
+                    <h6 class="mt-1 article-id mt-3">@article.PublishDate</h6>
 
                 </div>
                 <div class="reservation-buttons">

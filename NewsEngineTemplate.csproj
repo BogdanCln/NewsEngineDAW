@@ -185,13 +185,9 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\NewsDB.mdf" />
-    <Content Include="App_Data\NewsDBConnectionString.mdf" />
-    <Content Include="App_Data\NewsDBConnectionString_log.ldf">
-      <DependentUpon>NewsDBConnectionString.mdf</DependentUpon>
-    </Content>
-    <Content Include="App_Data\NewsDB_log.ldf">
-      <DependentUpon>NewsDB.mdf</DependentUpon>
+    <Content Include="App_Data\aspnet-NewsEngineTemplate-20200105014747.mdf" />
+    <Content Include="App_Data\aspnet-NewsEngineTemplate-20200105014747_log.ldf">
+      <DependentUpon>aspnet-NewsEngineTemplate-20200105014747.mdf</DependentUpon>
     </Content>
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -395,6 +391,7 @@
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
