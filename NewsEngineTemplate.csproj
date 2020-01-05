@@ -380,6 +380,7 @@
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Shared\UserPreviewPartial.cshtml" />
     <Content Include="Views\Users\Update.cshtml" />
+    <Content Include="Views\News\CreateExternal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />

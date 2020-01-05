@@ -1,0 +1,32 @@
+﻿
+@model NewsEngineTemplate.Models.News
+
+@if (ViewData.ContainsKey("notification"))
+{
+    <h3 class="alert alert-@ViewBag.notificationClass" role="alert">@ViewBag.notification</h3>
+}
+
+<div class="d-flex flex-row justify-content-end">
+    <a href="/news/new" class="btn btn-outline-info btn-sm my-2">
+        <i class="fa fa-external-link-alt"></i> Insert original article
+    </a>
+</div>
+
+<li class="list-group-item d-flex justify-content-between lh-condensed bg-dark">
+
+    <div class="container">
+        @using (Html.BeginForm("new-external", "news", FormMethod.Post, new { @class = "form-group", role = "margin:1em auto; position: relative; width: 100%" }))
+        {
+            <div class="form-group row">
+                @Html.Label("URI", "BBC.com URL", new { @class = "col-2 col-form-label" })
+                <div class="col-10">
+                    @Html.TextBox("URI", "", new { @class = "form-control article-title-input", placeholder = "Insert BBC.com URL here", })
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-outline-success btn-lg">
+                <i class="fa fa-check"></i>
+            </button>
+        }
+    </div>
+</li>
