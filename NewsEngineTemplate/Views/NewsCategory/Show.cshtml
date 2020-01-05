@@ -7,7 +7,22 @@
         </h4>
 
         <div>
-            <div><a class="btn btn-success" href="/news/new"><i class="fas fa-plus"></i></a></div>
+            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                <div><a class="btn btn-success mr-2" href="/news/new"><i class="fas fa-plus"></i></a></div>
+
+                <div class="dropdown show">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownSort" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-sort"></i>
+                    </a>
+
+                    <div class="dropdown-menu bg-dark" aria-labelledby="dropdownSort">
+                        <a class="dropdown-item text-light d-flex justify-content-between" href="/categories/category/@Model.CategoryID/date-asc"><span>Sort by date</span> <i class="fas fa-sort-up align-self-end"></i></a>
+                        <a class="dropdown-item text-light d-flex justify-content-between" href="/categories/category/@Model.CategoryID/date-desc"><span>Sort by date</span> <i class="fas fa-sort-down align-self-center"></i></a>
+                        <a class="dropdown-item text-light d-flex justify-content-between" href="/categories/category/@Model.CategoryID/name-asc"><span>Sort by name</span> <i class="fas fa-sort-up align-self-end"></i></a>
+                        <a class="dropdown-item text-light d-flex justify-content-between" href="/categories/category/@Model.CategoryID/name-desc"><span>Sort by name</span> <i class="fas fa-sort-down align-self-center"></i></a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <ul class="list-group mb-3" id="reservations-content">

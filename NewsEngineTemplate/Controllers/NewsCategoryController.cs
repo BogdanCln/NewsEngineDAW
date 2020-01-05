@@ -24,12 +24,12 @@ namespace NewsEngineTemplate.Controllers
 
         // GET: All categories or a single news category with ID specified as request parameter
         [ActionName("category")]
-        public ActionResult Show(int ID)
+        public ActionResult Show(int ID, string sortBy)
         {
             try
             {
                 NewsCategory category = categoriesDB.NewsCategories.Find(ID);
-                ViewBag.news = GetNewsArticlesByCategory(ID);
+                ViewBag.news = GetNewsArticlesByCategory(ID, sortBy);
                 return View("Show", category);
             }
             catch (Exception e)
@@ -141,9 +141,27 @@ namespace NewsEngineTemplate.Controllers
             return queryResult;
         }
 
-        public IQueryable<News> GetNewsArticlesByCategory(int catID)
+        public IQueryable<News> GetNewsArticlesByCategory(int catID, string sortBy)
         {
-            var articles = from news in newsDB.NewsArticles where news.Category.CategoryID == catID orderby news.PublishDate descending select news;
+            IQueryable<News> articles;
+            switch (sortBy)
+            {
+                case "date-asc":
+                    articles = from news in newsDB.NewsArticles where news.Category.CategoryID == catID orderby news.PublishDate ascending select news;
+                    break;
+                case "date-desc":
+                    articles = from news in newsDB.NewsArticles where news.Category.CategoryID == catID orderby news.PublishDate descending select news;
+                    break;
+                case "name-asc":
+                    articles = from news in newsDB.NewsArticles where news.Category.CategoryID == catID orderby news.Title ascending select news;
+                    break;
+                case "name-desc":
+                    articles = from news in newsDB.NewsArticles where news.Category.CategoryID == catID orderby news.Title descending select news;
+                    break;
+                default:
+                    articles = from news in newsDB.NewsArticles where news.Category.CategoryID == catID orderby news.PublishDate descending select news;
+                    break;
+            }
             return articles;
         }
 

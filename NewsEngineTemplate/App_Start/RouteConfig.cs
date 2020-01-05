@@ -20,8 +20,8 @@ namespace NewsEngineTemplate
 
             routes.MapRoute(
                 name: "Category",
-                url: "categories/{action}/{ID}",
-                defaults: new { controller = "NewsCategory", action = "Index", ID = UrlParameter.Optional });
+                url: "categories/{action}/{ID}/{sortBy}",
+                defaults: new { controller = "NewsCategory", action = "Index", ID = UrlParameter.Optional, sortBy = UrlParameter.Optional });
 
             routes.MapRoute(
                 name: "Default",
