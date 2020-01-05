@@ -1,0 +1,47 @@
+﻿@model NewsEngineTemplate.Models.NewsCategory
+
+@if (ViewData.ContainsKey("notification"))
+{
+    <h3 class="alert alert-@ViewBag.notificationClass" role="alert">@ViewBag.notification</h3>
+    <br />
+}
+
+@using (Html.BeginForm("edit", "NewsCategory", FormMethod.Post, new { @class = "form-group", role = "margin:1em auto; position: relative; width: 100%" }))
+{
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    @Html.HiddenFor(m => m.CategoryID)
+    @Html.Hidden("CreateDate", DateTime.Now, new { @class = "form-control" })
+
+    <div class="form-group row">
+        @Html.Label("Title", "Category Title", new { @class = "col-2 col-form-label" })
+        <div class="col-10">
+            @Html.TextBox("Title", Model.Title, new { @class = "form-control article-title-input", value = Model.Title })
+        </div>
+        @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger " })
+
+    </div>
+
+    <div class="form-group row">
+        @Html.Label("Description", "Category description", new { @class = "col-2 col-form-label" })
+        <div class="col-10">
+            @Html.TextArea("Description", Model.Description,
+           new { @class = "form-control" })
+        </div>
+        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger " })
+    </div>
+
+    <button type="submit" class="btn btn-outline-success btn-lg">
+        <i class="fa fa-check"></i>
+    </button>
+}
+
+<form method="post" action="/categories/delete/@Model.CategoryID" class="form-group">
+    @Html.HttpMethodOverride(HttpVerbs.Delete)
+    <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete category</button>
+    @*
+        #TODO: Bootstrap modal to confirm action
+        #TODO: Category edit history
+    *@
+</form>

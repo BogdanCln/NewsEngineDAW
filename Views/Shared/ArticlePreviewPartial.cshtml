@@ -1,0 +1,22 @@
+﻿<li class="article-container list-group-item d-flex justify-content-between lh-condensed bg-dark">
+    <div class="article-content">
+        <h4 class="mb-1 article-title">@Model.Title</h4>
+        <small class="article-content">
+            @Model.Content.Substring(0, Math.Min(@Model.Content.Length, 600))...
+        </small>
+        <h6 class="mt-1 article-id mt-3">@Model.PublishDate - @Model.User.UserName</h6>
+
+    </div>
+    <div class="article-buttons">
+        @if (ViewBag.isAdmin || ViewBag.isEditor && @Model.User.Id == ViewBag.userID)
+        {
+            <a class="btn btn-outline-dark btn-lg" href="/news/edit/@Model.ID">
+                <i class="fas fa-edit"></i>
+            </a>
+        }
+
+        <a class="btn btn-outline-dark btn-lg" href="/news/article/@Model.ID">
+            <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+</li>

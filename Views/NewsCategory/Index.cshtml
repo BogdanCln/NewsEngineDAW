@@ -1,0 +1,53 @@
+﻿@if (ViewData.ContainsKey("notification"))
+{
+    <h3 class="alert alert-@ViewBag.notificationClass" role="alert">@ViewBag.notification</h3>
+    <br />
+}
+
+<div class="col">
+    <div class="d-flex flex-row justify-content-between">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+            Categories
+        </h4>
+
+        <div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div><a class="btn btn-success" href="/categories"><i class="fas fa-list-alt"></i> Categories</a></div>
+                @if (ViewBag.isAdmin)
+                {
+                    <div><a class="btn btn-success ml-2" href="/categories/new"><i class="fas fa-plus"></i></a></div>
+                }
+            </div>
+        </div>
+    </div>
+    <ul class="list-group mb-3" id="reservations-content">
+        @foreach (var category in ViewBag.categories)
+        {
+            <li class="article-container list-group-item d-flex justify-content-between lh-condensed bg-dark">
+                <div class="article-content">
+                    <h4 class="mb-1 article-title">@category.Title</h4>
+                    <small class="article-content">
+                        @category.Description.Substring(0, Math.Min(category.Description.Length, 200))...
+                    </small>
+
+                </div>
+                <div class="article-buttons">
+                    @if (ViewBag.isAdmin)
+                    {
+                        <a class="btn btn-outline-dark btn-lg" href="/categories/edit/@category.CategoryID">
+                            <i class="fas fa-edit"></i>
+                            <span>Edit</span>
+                        </a>
+                    }
+
+                    <a class="btn btn-outline-dark btn-lg" href="/categories/category/@category.CategoryID">
+                        <i class="fas fa-arrow-right"></i>
+                        <span>Browse</span>
+                    </a>
+                </div>
+                <input type="checkbox" name="delete" class="delete-article-checkbox" style="display: none;">
+            </li>
+
+        }
+    </ul>
+</div>

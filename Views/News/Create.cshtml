@@ -1,0 +1,53 @@
+﻿
+@model NewsEngineTemplate.Models.News
+
+@if (ViewData.ContainsKey("notification"))
+{
+    <h3 class="alert alert-@ViewBag.notificationClass" role="alert">@ViewBag.notification</h3>
+}
+
+<li class="list-group-item d-flex justify-content-between lh-condensed bg-dark">
+    <div class="container">
+        @using (Html.BeginForm("new", "News", FormMethod.Post, new { @class = "form-group", role = "margin:1em auto; position: relative; width: 100%" }))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @Html.HiddenFor(m => m.UserID)
+
+            @Html.HiddenFor(m => m.ID)
+            @Html.Hidden("Date", DateTime.Now, new { @class = "form-control" })
+
+            <div class="form-group row">
+                @Html.Label("Title", "Article Title", new { @class = "col-2 col-form-label" })
+                <div class="col-10">
+                    @Html.TextBox("Title", "Insert article title", new { @class = "form-control article-title-input", value = "Insert article title" })
+                </div>
+                @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger " })
+
+            </div>
+
+            <div class="form-group row">
+                @Html.Label("Content", "Article content", new { @class = "col-2 col-form-label" })
+                <div class="col-10">
+                    @Html.TextArea("Content", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras semper hendrerit justo, eget vulputate magna gravida a. Nam placerat augue sit amet lacus pulvinar, non facilisis tortor porttitor. Nullam ornare felis dapibus ipsum ornare iaculis. Aliquam id dignissim augue. Mauris eleifend erat vel nunc malesuada rhoncus eu sit amet elit. In sit amet hendrerit risus. Integer dignissim pellentesque velit nec fringilla. Nunc cursus lorem tortor, eu vehicula erat ornare bibendum.Quisque a erat ultricies libero egestas vehicula vitae ut tellus.Mauris dictum ipsum eu est sodales vehicula.Sed porta vehicula placerat.Etiam ac orci ultricies, commodo nulla at, ornare lorem.Aliquam condimentum, sem ullamcorper vulputate pharetra, magna ipsum convallis felis, eu vulputate nulla turpis nec eros.Nunc dapibus elit non neque blandit hendrerit.Sed a metus non lectus congue semper.Mauris vel imperdiet lectus, non commodo nibh.Mauris ut mollis justo.Sed ultrices condimentum dictum.Sed gravida vel eros at vulputate.Aenean diam ante, sodales laoreet massa in, pellentesque malesuada urna.Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.Quisque nec volutpat lorem.Pellentesque elementum velit quis velit porttitor condimentum.Phasellus sed dui eget massa tempor blandit.Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum vitae tortor gravida, scelerisque urna vitae, tempor neque.Aenean eu ligula luctus, consectetur ante non, semper ante.Mauris ornare ligula nec orci vehicula porta.Suspendisse imperdiet elit at condimentum elementum. Curabitur fermentum posuere mi vitae elementum. Fusce semper diam augue. Pellentesque egestas a lorem vitae hendrerit. Donec porttitor eros nulla. Interdum et malesuada fames ac ante ipsum primis in faucibus.Phasellus eget pretium urna, vitae tempor nisl. Ut suscipit enim sapien. Etiam gravida tortor quis arcu hendrerit aliquam.Nunc mollis dignissim odio, lobortis fermentum elit sollicitudin a. Phasellus sodales tempor nulla, vel gravida felis suscipit pulvinar. Cras congue ipsum mauris, eget facilisis ante tempor eget. Vestibulum sed leo viverra, sagittis sem non, pharetra est.Vivamus vel ullamcorper nulla, vel euismod dui. Donec posuere dolor ut diam molestie rutrum.Nam tempus sapien eu erat egestas pretium.Etiam vestibulum consectetur nisi, rhoncus tristique mi elementum ut. Maecenas sollicitudin nibh risus, ut dignissim nunc consectetur sit amet.",
+                   new { @class = "form-control" })
+                </div>
+                @Html.ValidationMessageFor(m => m.Content, "", new { @class = "text-danger " })
+            </div>
+
+            <div class="form-group row">
+                <label class="col-2 col-form-label">Category</label>
+                <div class="col-10">
+                    @Html.DropDownListFor(m => m.CategoryID, new SelectList(ViewBag.Categories, "Value", "Text"),
+                 "Select category", new { @class = "form-control" })
+
+                    @Html.ValidationMessageFor(m => m.CategoryID, "", new { @class = "text-danger " })
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-outline-success btn-lg">
+                <i class="fa fa-check"></i>
+            </button>
+        }
+    </div>
+</li>

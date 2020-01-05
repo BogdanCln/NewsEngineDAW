@@ -1,0 +1,38 @@
+﻿
+@model NewsEngineTemplate.Models.NewsCategory
+
+@if (ViewData.ContainsKey("notification"))
+{
+    <h3 class="alert alert-@ViewBag.notificationClass" role="alert">@ViewBag.notification</h3>
+    <br />
+}
+
+@using (Html.BeginForm("new", "NewsCategory", FormMethod.Post, new { @class = "form-group", role = "margin:1em auto; position: relative; width: 100%" }))
+{
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    @Html.HiddenFor(m => m.CategoryID)
+    @Html.Hidden("CreateDate", DateTime.Now, new { @class = "form-control" })
+
+    <div class="form-group row">
+        @Html.Label("Title", "Category Title", new { @class = "col-2 col-form-label" })
+        <div class="col-10">
+            @Html.TextBox("Title", "Insert category title", new { @class = "form-control article-title-input", value = "Insert category title" })
+        </div>
+        @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger " })
+
+    </div>
+
+    <div class="form-group row">
+        @Html.Label("Description", "Category description", new { @class = "col-2 col-form-label" })
+        <div class="col-10">
+            @Html.TextArea("Description", "Everything about abc",
+           new { @class = "form-control" })
+        </div>
+        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger " })
+    </div>
+
+    <button type="submit" class="btn btn-outline-success btn-lg">
+        <i class="fa fa-check"></i>
+    </button>
+}
