@@ -5,18 +5,24 @@
 
 <div class="col">
     <div class="d-flex flex-row justify-content-between">
-        <div><a class="btn btn-success" href="/news/new"><i class="fas fa-plus"></i> New article</a></div>
-
-        <h4 class="d-flex justify-content-between align-items-center mb-3">
-            Latest Articles
-        </h4>
 
         <div>
             <h4 class="d-flex justify-content-between align-items-center mb-3">
-                <div><a class="btn btn-success" href="/categories"><i class="fas fa-list-alt"></i> Categories</a></div>
-
+                <a class="btn btn-success" href="/news/new"><i class="fas fa-plus"></i> New article</a>
+                <a class="btn btn-success mx-2" href="/categories"><i class="fas fa-list-alt"></i> Categories</a>
             </h4>
         </div>
+
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+            @using (Html.BeginForm("Search", "News", FormMethod.Get, new { @class = "form-inline md-form form-sm mt-0" }))
+            {
+                @Html.TextBox("searchExp", null, new { @class = "form-control" })
+                <button type="submit" class="btn">
+                    <i class="fa fa-search"></i>
+                </button>
+            }
+        </h4>
+
     </div>
     <ul class="list-group mb-3">
         @foreach (NewsEngineTemplate.Models.News article in ViewBag.news)

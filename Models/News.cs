@@ -32,12 +32,4 @@ namespace NewsEngineTemplate.Models
 
         public DateTime PublishDate { get; set; }
     }
-
-    //public class NewsDBContext : DbContext
-    //{
-    //    public NewsDBContext() : base("NewsDBConnectionString") { }
-    //    public DbSet<News> NewsArticles { get; set; }
-    //    public DbSet<NewsCategory> Categories { get; set; }
-
-    //}
 }

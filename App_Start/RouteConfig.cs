@@ -14,9 +14,14 @@ namespace NewsEngineTemplate
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "NewsSearch",
+                url: "news/search/{searchExp}",
+                defaults: new { controller = "News", action = "Search", searchExp = UrlParameter.Optional });
+
+            routes.MapRoute(
                 name: "News",
                 url: "news/{action}/{ID}",
-                defaults: new { controller = "News", action = "Index", ID = UrlParameter.Optional });
+                defaults: new { controller = "News", action = "Index", ID = UrlParameter.Optional});
 
             routes.MapRoute(
                 name: "Category",
@@ -32,7 +37,7 @@ namespace NewsEngineTemplate
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}",
-                defaults: new { controller = "News", action = "Index"}
+                defaults: new { controller = "News", action = "Index" }
             );
         }
     }

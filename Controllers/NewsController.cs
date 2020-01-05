@@ -10,16 +10,13 @@ namespace NewsEngineTemplate.Controllers
 {
     public class NewsController : Controller
     {
-        //private NewsDBContext newsDB = new NewsDBContext();
-        //private NewsCategoryDBContext categoriesDB = new NewsCategoryDBContext();
-
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: All news list
         //[Authorize(Roles = "User,Editor,Administrator")]
         public ActionResult Index()
         {
-            List<News> articles = GetNewsArticles();
+            List<News> articles = GetNewsArticles(null);
             ViewBag.news = articles;
 
             if (TempData.ContainsKey("redirectMessage"))
@@ -43,6 +40,18 @@ namespace NewsEngineTemplate.Controllers
             return View();
         }
 
+        public ActionResult Search(string searchExp)
+        {
+            Debug.WriteLine("?Search for " + searchExp);
+            List<News> articles = GetNewsArticles(searchExp);
+            ViewBag.news = articles;
+            ViewBag.isAdmin = User.IsInRole("Administrator");
+            ViewBag.isEditor = User.IsInRole("Editor");
+            ViewBag.isUser = User.IsInRole("User");
+            ViewBag.userID = User.Identity.GetUserId();
+
+            return View("Index");
+        }
 
         // GET: All news list or a single news article with ID specified as request parameter
         [ActionName("article")]
@@ -111,44 +120,42 @@ namespace NewsEngineTemplate.Controllers
         [Authorize(Roles = "Editor,Administrator")]
         public ActionResult Create([Bind(Exclude = "ID, PublishDate")] News article)
         {
-            // Preluam ID-ul utilizatorului curent
             article.UserID = User.Identity.GetUserId();
             article.PublishDate = DateTime.Now;
 
-            //try
-            //{
-            if (ModelState.IsValid)
+            try
             {
-                db.NewsArticles.Add(article);
-                db.SaveChanges();
-                TempData["redirectMessage"] = "The article has been published.";
-                TempData["redirectMessageClass"] = "success";
-                return Redirect("/news/article/" + article.ID);
+                if (ModelState.IsValid)
+                {
+                    db.NewsArticles.Add(article);
+                    db.SaveChanges();
+                    TempData["redirectMessage"] = "The article has been published.";
+                    TempData["redirectMessageClass"] = "success";
+                    return Redirect("/news/article/" + article.ID);
+                }
+                else
+                {
+                    string messages = string.Join("; ", ModelState.Values
+                                        .SelectMany(x => x.Errors)
+                                        .Select(x => x.ErrorMessage));
+                    Debug.WriteLine(messages);
+                    ViewBag.Categories = GetAllCategories();
+                    TempData["redirectMessage"] = messages;
+                    TempData["redirectMessageClass"] = "danger";
+                    return View("Create", article);
+                }
             }
-            else
+            catch (Exception e)
             {
                 string messages = string.Join("; ", ModelState.Values
                                     .SelectMany(x => x.Errors)
                                     .Select(x => x.ErrorMessage));
-                Debug.WriteLine(messages);
+                Debug.WriteLine(e.Message + messages);
                 ViewBag.Categories = GetAllCategories();
-                TempData["redirectMessage"] = messages;
+                TempData["redirectMessage"] = e.Message + " " + messages;
                 TempData["redirectMessageClass"] = "danger";
-                return View("Create", article);
+                return Redirect("/news/new/");
             }
-            //}
-            //catch (Exception e)
-            //{
-            //    string messages = string.Join("; ", ModelState.Values
-            //                        .SelectMany(x => x.Errors)
-            //                        .Select(x => x.ErrorMessage));
-            //    Debug.WriteLine(e.Message + messages);
-            //    ViewBag.Categories = GetAllCategories();
-            //    TempData["redirectMessage"] = e.Message + " " + messages;
-            //    TempData["redirectMessageClass"] = "danger";
-            //    return Redirect("/news/new/");
-            //    throw e;
-            //}
         }
 
         [ActionName("edit")]
@@ -253,9 +260,13 @@ namespace NewsEngineTemplate.Controllers
         }
 
         [NonAction]
-        public List<News> GetNewsArticles()
+        public List<News> GetNewsArticles(string searchExp)
         {
-            var articles = from news in db.NewsArticles orderby news.PublishDate descending select news;
+            IQueryable<News> articles = from news in db.NewsArticles orderby news.PublishDate descending select news;
+            if (searchExp != null)
+            {
+                articles = articles.Where(a => a.Title.Contains(searchExp));
+            }
             return articles.ToList();
         }
 

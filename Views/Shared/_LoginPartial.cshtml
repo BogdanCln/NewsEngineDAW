@@ -12,15 +12,20 @@
                 </span>
             </div>
             <div>
+
                 @if (User.IsInRole("Administrator"))
                 {
                     <a class="btn btn-outline-info btn-sm" href="/users">
                         <i class="fa fa-user"></i> Users
                     </a>
                 }
+
+
+
                 <a class="btn btn-outline-warning btn-sm" href="javascript:document.getElementById('logoutForm').submit()">
                     <i class="fa fa-times"></i> Log off
                 </a>
+
             </div>
         </div>
     }
