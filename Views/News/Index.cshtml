@@ -19,7 +19,14 @@
 
         <div>
             <h4 class="d-flex justify-content-between align-items-center mb-3">
-                <a class="btn btn-outline-info" href="/news/new"><i class="fas fa-plus"></i> New article</a>
+                @if (ViewBag.isAdmin || ViewBag.isEditor)
+                {
+                    <a class="btn btn-outline-info" href="/news/new"><i class="fas fa-plus"></i> New article</a>
+                }
+                else
+                {
+                    <a class="btn btn-outline-info" href="/news/new-propose"><i class="fas fa-plus"></i> Suggest article</a>
+                }
                 <a class="btn btn-outline-info mx-2" href="/categories"><i class="fas fa-list-alt"></i> Categories</a>
             </h4>
         </div>

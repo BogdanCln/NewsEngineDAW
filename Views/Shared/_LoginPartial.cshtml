@@ -20,7 +20,12 @@
                     </a>
                 }
 
-
+                @if (User.IsInRole("Administrator") || User.IsInRole("Editor"))
+                {
+                    <a class="btn btn-outline-info btn-sm" href="/news/proposals">
+                        <i class="fa fa-user"></i> Proposed articles
+                    </a>
+                }
 
                 <a class="btn btn-outline-warning btn-sm" href="javascript:document.getElementById('logoutForm').submit()">
                     <i class="fa fa-times"></i> Log off
@@ -34,10 +39,9 @@ else
 {
 
     <div class="d-flex flex-row justify-content-between">
+        <span>Guest</span>
         <div>
             @Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "btn btn-outline-info btn-sm" })
-        </div>
-        <div>
             @Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "btn btn-outline-info btn-sm" })
         </div>
     </div>

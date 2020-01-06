@@ -57,7 +57,7 @@ namespace NewsEngineTemplate.Controllers
 
         // GET: All news list or a single news article with ID specified as request parameter
         [ActionName("article")]
-        [Authorize(Roles = "User,Editor,Administrator")]
+        //[Authorize(Roles = "User,Editor,Administrator")]
         public ActionResult Show(int ID)
         {
             try
@@ -115,6 +115,7 @@ namespace NewsEngineTemplate.Controllers
 
             return View("Create");
         }
+
         // GET: View for adding an external news article.
         [ActionName("new-external")]
         [Authorize(Roles = "Editor,Administrator")]
@@ -136,6 +137,29 @@ namespace NewsEngineTemplate.Controllers
             }
 
             return View("CreateExternal");
+        }
+
+        // GET: View for proposing a news article.
+        [ActionName("new-propose")]
+        [Authorize(Roles = "User, Editor,Administrator")]
+        public ActionResult CreateProposal()
+        {
+            ViewBag.Categories = GetAllCategories();
+
+            if (TempData.ContainsKey("redirectMessage"))
+            {
+                ViewBag.notification = TempData["redirectMessage"].ToString();
+                if (TempData.ContainsKey("redirectMessageClass"))
+                {
+                    ViewBag.notificationClass = TempData["redirectMessageClass"].ToString();
+                }
+                else
+                {
+                    ViewBag.notificationClass = "info";
+                }
+            }
+
+            return View("CreateProposal");
         }
 
         // POST: Receive the new news article form-data.
@@ -252,6 +276,51 @@ namespace NewsEngineTemplate.Controllers
                     TempData["redirectMessageClass"] = "warning";
                     return Redirect("/news/new-external");
                 }
+            }
+        }
+
+        // POST: Receive the new news article proposal form-data.
+        [HttpPost]
+        [ActionName("new-proposal")]
+        [Authorize(Roles = "User, Editor,Administrator")]
+        public ActionResult CreateProposal([Bind(Exclude = "ID, PublishDate")] News article)
+        {
+            article.UserID = User.Identity.GetUserId();
+            article.PublishDate = DateTime.Now;
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    //db.NewsArticles.Add(article);
+                    //db.SaveChanges();
+                    TempData["redirectMessage"] = "The article has been submitted for proposal.";
+                    TempData["redirectMessageClass"] = "success";
+                    return Redirect("/news");
+                }
+                else
+                {
+                    string messages = string.Join("; ", ModelState.Values
+                                        .SelectMany(x => x.Errors)
+                                        .Select(x => x.ErrorMessage));
+                    Debug.WriteLine(messages);
+                    TempData["redirectMessage"] = messages;
+                    TempData["redirectMessageClass"] = "danger";
+
+                    ViewBag.Categories = GetAllCategories();
+                    return View("CreateProposal", article);
+                }
+            }
+            catch (Exception e)
+            {
+                string messages = string.Join("; ", ModelState.Values
+                                    .SelectMany(x => x.Errors)
+                                    .Select(x => x.ErrorMessage));
+                Debug.WriteLine(e.Message + messages);
+                ViewBag.Categories = GetAllCategories();
+                TempData["redirectMessage"] = e.Message + " " + messages;
+                TempData["redirectMessageClass"] = "danger";
+                return Redirect("/news/new/");
             }
         }
 

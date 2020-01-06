@@ -2,8 +2,9 @@
 > sa existe cel putin 4 tipuri de utilizatori: vizitator neinregistrat, utilizator
 inregistrat, editor si administrator. (0.5p)
 
-> orice utilizator poate vizualiza stirile aparute pe site. (0.5p) Pe pagina
-principala vor aparea stirile cele mai recente. (0.5p)
+> orice utilizator poate vizualiza stirile aparute pe site. (0.5p) 
+
+> Pe pagina principala vor aparea stirile cele mai recente. (0.5p)
 
 > stirile vor fi impartite pe categorii (create dinamic): stiinta, tehnologie, sport,
 etc, existand posibilitatea de adaugare a noi categorii. (administratorul poate
