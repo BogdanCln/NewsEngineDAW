@@ -49,6 +49,13 @@
                     </div>
                 </div>
 
+                <div class="form-group row">
+                    @Html.Label("isProposal", "In proposal state", new { @class = "col-2 col-form-label" })
+                    <div class="col-10">
+                        @Html.CheckBox("isProposal", Model.isProposal, new { @class = "big-checkbox" })
+                    </div>
+                </div>
+
                 @Html.Hidden("Date", DateTime.Now, new { @class = "form-control" })
 
 
@@ -63,8 +70,8 @@
                     <i class="fa fa-trash mx-2"></i> Delete article
                 </button>
                 @*
-            #TODO: Bootstrap modal to confirm action
-            #TODO: News article edit history
+                    #TODO: Bootstrap modal to confirm action
+                    #TODO: News article edit history
                 *@
             </form>
         </div>

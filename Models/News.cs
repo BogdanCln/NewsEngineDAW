@@ -14,6 +14,8 @@ namespace NewsEngineTemplate.Models
         [Key]
         public int ID { get; set; }
 
+        public Boolean isProposal { get; set; } = false;
+
         public string UserID { get; set; }
         public virtual ApplicationUser User { get; set; }
 
@@ -21,7 +23,7 @@ namespace NewsEngineTemplate.Models
         [StringLength(80, ErrorMessage = "Title too long. Maximum allowed is 80 characters.")]
         public string Title { get; set; }
 
-        [Required (ErrorMessage = "Content is mandatory")]
+        [Required(ErrorMessage = "Content is mandatory")]
         public string Content { get; set; }
 
         [Required(ErrorMessage = "Category is mandatory")]

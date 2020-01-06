@@ -382,6 +382,7 @@
     <Content Include="Views\Users\Update.cshtml" />
     <Content Include="Views\News\CreateExternal.cshtml" />
     <Content Include="Views\News\CreateProposal.cshtml" />
+    <Content Include="Views\News\Proposals.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />

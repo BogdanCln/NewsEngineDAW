@@ -42,6 +42,34 @@ namespace NewsEngineTemplate.Controllers
             return View();
         }
 
+        // GET: All news list
+        [Authorize(Roles = "Editor,Administrator")]
+        [ActionName("proposals")]
+        public ActionResult Proposals()
+        {
+            List<News> articles = GetNewsProposals(null);
+            ViewBag.news = articles;
+
+            if (TempData.ContainsKey("redirectMessage"))
+            {
+                ViewBag.notification = TempData["redirectMessage"].ToString();
+                if (TempData.ContainsKey("redirectMessageClass"))
+                {
+                    ViewBag.notificationClass = TempData["redirectMessageClass"].ToString();
+                }
+                else
+                {
+                    ViewBag.notificationClass = "info";
+                }
+            }
+
+            ViewBag.isAdmin = User.IsInRole("Administrator");
+            ViewBag.isEditor = User.IsInRole("Editor");
+            ViewBag.userID = User.Identity.GetUserId();
+
+            return View("Proposals");
+        }
+
         public ActionResult Search(string searchExp)
         {
             Debug.WriteLine("?Search for " + searchExp);
@@ -64,6 +92,12 @@ namespace NewsEngineTemplate.Controllers
             {
                 News article = db.NewsArticles.Find(ID);
                 article.Categories = GetAllCategories();
+
+                if (article.isProposal == true && (!User.IsInRole("Administrator") && !User.IsInRole("Editor"))) {
+                    TempData["redirectMessage"] = "Permission denied";
+                    TempData["redirectMessageClass"] = "danger";
+                    return RedirectToAction("Index");
+                }
 
                 if (TempData.ContainsKey("redirectMessage"))
                 {
@@ -287,13 +321,14 @@ namespace NewsEngineTemplate.Controllers
         {
             article.UserID = User.Identity.GetUserId();
             article.PublishDate = DateTime.Now;
+            article.isProposal = true;
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    //db.NewsArticles.Add(article);
-                    //db.SaveChanges();
+                    db.NewsArticles.Add(article);
+                    db.SaveChanges();
                     TempData["redirectMessage"] = "The article has been submitted for proposal.";
                     TempData["redirectMessageClass"] = "success";
                     return Redirect("/news");
@@ -428,7 +463,18 @@ namespace NewsEngineTemplate.Controllers
         [NonAction]
         public List<News> GetNewsArticles(string searchExp)
         {
-            IQueryable<News> articles = from news in db.NewsArticles orderby news.PublishDate descending select news;
+            IQueryable<News> articles = from news in db.NewsArticles where news.isProposal == false orderby news.PublishDate descending select news;
+            if (searchExp != null)
+            {
+                articles = articles.Where(a => a.Title.Contains(searchExp));
+            }
+            return articles.ToList();
+        }
+
+        [NonAction]
+        public List<News> GetNewsProposals(string searchExp)
+        {
+            IQueryable<News> articles = from news in db.NewsArticles where news.isProposal == true orderby news.PublishDate descending select news;
             if (searchExp != null)
             {
                 articles = articles.Where(a => a.Title.Contains(searchExp));

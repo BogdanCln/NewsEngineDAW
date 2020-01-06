@@ -21,7 +21,7 @@ de stiri, specificand doar titlul, headline-ul si o poza (sub forma de thumbnail
 (0.5p)
 - utilizatorii pot adauga comentarii la stirile aparute, isi pot sterge si edita
 propriile comentarii (1.0p) 
-- utilizatorii pot propune stiri noi editorilor, pe care acestia
+> utilizatorii pot propune stiri noi editorilor, pe care acestia
 le accepta sau le revoca. (1.5p)
 > stirile pot fi cautate prin intermediul unui motor de cautare propriu. (0.5p)
 
