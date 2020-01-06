@@ -93,7 +93,8 @@ namespace NewsEngineTemplate.Controllers
                 News article = db.NewsArticles.Find(ID);
                 article.Categories = GetAllCategories();
 
-                if (article.isProposal == true && (!User.IsInRole("Administrator") && !User.IsInRole("Editor"))) {
+                if (article.isProposal == true && (!User.IsInRole("Administrator") && !User.IsInRole("Editor")))
+                {
                     TempData["redirectMessage"] = "Permission denied";
                     TempData["redirectMessageClass"] = "danger";
                     return RedirectToAction("Index");
@@ -381,7 +382,7 @@ namespace NewsEngineTemplate.Controllers
                 }
             }
 
-            if (article.UserID == User.Identity.GetUserId() || User.IsInRole("Administrator"))
+            if (article.UserID == User.Identity.GetUserId() || User.IsInRole("Administrator") || User.IsInRole("Editor") && article.isProposal)
             {
                 return View("Update", article);
             }
@@ -391,7 +392,6 @@ namespace NewsEngineTemplate.Controllers
                 TempData["redirectMessageClass"] = "danger";
                 return RedirectToAction("Index");
             }
-
         }
 
         // PUT: Send the updated news article data.
