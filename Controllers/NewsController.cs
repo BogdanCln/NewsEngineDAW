@@ -220,7 +220,8 @@ namespace NewsEngineTemplate.Controllers
                     {
                         if (m.Value.Length > 15)
                         {
-                            article.Title = m.Value.Substring(12);
+                            string inPattern = @"(\""headline.*?\"":\""*\s*)";
+                            article.Title = Regex.Replace(m.Value, inPattern, "");
                             int endCut = article.Title.Length - 3;
                             article.Title = article.Title.Remove(endCut);
                             article.Title = article.Title + " [BBC.com]";
@@ -231,7 +232,10 @@ namespace NewsEngineTemplate.Controllers
                     {
                         if (m.Value.Length > 18)
                         {
-                            article.Content = m.Value.Substring(15);
+                            string inPattern = @"(\""description.*?\"":\""*\s*)";
+                            article.Content = Regex.Replace(m.Value, inPattern, "");
+                            //article.Content = m.Value.Substring(15);
+
                             int endCut = article.Content.Length - 3;
                             article.Content = article.Content.Remove(endCut);
                             article.Content = article.Content + "\nRead the full story on " + URI;
