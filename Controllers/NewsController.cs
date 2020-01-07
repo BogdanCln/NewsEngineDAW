@@ -242,6 +242,19 @@ namespace NewsEngineTemplate.Controllers
             }
         }
 
+
+        // POST: Receive a comment form-data.
+        [HttpPost]
+        [ActionName("new-comment")]
+        [Authorize(Roles = "Editor, Administrator, User")]
+        public ActionResult CreateComment(string content)
+        {
+            TempData["redirectMessage"] = "Not implemented";
+            TempData["redirectMessageClass"] = "info";
+
+            return Redirect("/news");
+        }
+
         // POST: Receive the external news article form-data.
         [HttpPost]
         [ActionName("new-external")]

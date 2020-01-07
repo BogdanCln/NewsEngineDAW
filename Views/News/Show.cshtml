@@ -14,28 +14,43 @@
             <p style="white-space: pre-line">@Model.Content</p>
         </div>
 
-        <h6 class="mt-1 article-id py-3">@Model.PublishDate | @Model.User.UserName</h6>
+        <div class="d-flex flex-row justify-content-between">
+            <h6 class="mt-1 article-id py-3">@Model.PublishDate | @Model.User.UserName</h6>
+            @if (ViewBag.isAdmin || ViewBag.isEditor && @Model.User.Id == ViewBag.userID)
+            {
+                <div class="d-flex flex-row">
+                    <a href="/news/edit/@Model.ID">
+                        <button class="btn btn-outline-info btn-lg mx-2">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </a>
+                    <form method="post" action="/news/delete/@Model.ID" class="form-group">
+                        @Html.HttpMethodOverride(HttpVerbs.Delete)
+                        <button type="submit" class="btn btn-outline-danger btn-lg">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        @*
+                            #TODO: Bootstrap modal to confirm action
+                            #TODO: Category edit history
+                        *@
+                    </form>
+                </div>
+            }
+        </div>
 
-        @if (ViewBag.isAdmin || ViewBag.isEditor && @Model.User.Id == ViewBag.userID)
+        @if (ViewBag.isAdmin || ViewBag.isEditor || ViewBag.isUser)
         {
-            <div class="d-flex flex-row">
-                <a href="/news/edit/@Model.ID">
-                    <button class="btn btn-outline-warning btn-lg mx-2">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                </a>
-                <form method="post" action="/news/delete/@Model.ID" class="form-group">
-                    @Html.HttpMethodOverride(HttpVerbs.Delete)
-                    <button type="submit" class="btn btn-outline-danger btn-lg">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                    @*
-                        #TODO: Bootstrap modal to confirm action
-                        #TODO: Category edit history
-                    *@
-                </form>
+            <div class="pb-2" style="width: 80%; margin: auto;">
+                @using (Html.BeginForm("new-comment", "news", FormMethod.Post, new { @class = "form-group", style = "width:100%" }))
+                {
+                    <div class="form-group mb-1">
+                        <textarea placeholder="What is your opinion on this subject?" style="width:100%"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-outline-info"><i class="fa fa-share"></i> Post comment</button>
+                }
             </div>
         }
+
     </div>
 
 </div>
