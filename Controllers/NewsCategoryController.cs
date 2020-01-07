@@ -42,7 +42,6 @@ namespace NewsEngineTemplate.Controllers
             return View();
         }
 
-
         // GET: All categories or a single news category with ID specified as request parameter
         [ActionName("category")]
         [Authorize(Roles = "User,Editor,Administrator")]

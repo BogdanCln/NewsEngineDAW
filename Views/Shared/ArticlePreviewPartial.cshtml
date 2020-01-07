@@ -8,7 +8,7 @@
 
     </div>
     <div class="article-buttons">
-        @if (ViewBag.isAdmin || ViewBag.isEditor && @Model.User.Id == ViewBag.userID|| ViewBag.isEditor && @Model.isProposal)
+        @if (ViewBag.isAdmin || ViewBag.isEditor && @Model.User.Id == ViewBag.userID || ViewBag.isEditor && @Model.isProposal)
         {
             <a class="btn btn-outline-dark btn-lg" href="/news/edit/@Model.ID">
                 <i class="fas fa-edit"></i>

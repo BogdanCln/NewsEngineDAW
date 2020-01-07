@@ -32,6 +32,8 @@ namespace NewsEngineTemplate.Models
         public virtual NewsCategory Category { get; set; }
         public IEnumerable<SelectListItem> Categories { get; set; }
 
+        public virtual ICollection<NewsComments> NewsComments { get; set; }
+
         public DateTime PublishDate { get; set; }
     }
 }

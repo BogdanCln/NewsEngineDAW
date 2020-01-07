@@ -40,16 +40,26 @@
 
         @if (ViewBag.isAdmin || ViewBag.isEditor || ViewBag.isUser)
         {
-            <div class="pb-2" style="width: 80%; margin: auto;">
-                @using (Html.BeginForm("new-comment", "news", FormMethod.Post, new { @class = "form-group", style = "width:100%" }))
-                {
-                    <div class="form-group mb-1">
-                        <textarea placeholder="What is your opinion on this subject?" style="width:100%"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-outline-info"><i class="fa fa-share"></i> Post comment</button>
-                }
+    <div class="pb-2" style="width: 80%; margin: auto;">
+        @using (Html.BeginForm("new", "comments", FormMethod.Post, new { @class = "form-group", style = "width:100%" }))
+        {
+            @Html.HiddenFor(m => m.UserID)
+            @Html.Hidden("ArticleID", Model.ID)
+            <div class="form-group mb-1">
+                <textarea name="Content" placeholder="What is your opinion on this subject?" style="width:100%"></textarea>
             </div>
+            <button type="submit" class="btn btn-outline-info"><i class="fa fa-share"></i> Post comment</button>
         }
+    </div>
+        }
+
+        <div class="pb-2">
+            <h5>Comments</h5>
+            @foreach (NewsEngineTemplate.Models.NewsComments comment in Model.NewsComments)
+            {
+                @Html.Partial("ArticleCommentPartial", comment, ViewData);
+            }
+        </div>
 
     </div>
 

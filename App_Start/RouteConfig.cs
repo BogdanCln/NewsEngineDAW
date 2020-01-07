@@ -29,6 +29,11 @@ namespace NewsEngineTemplate
                 defaults: new { controller = "NewsCategory", action = "Index", ID = UrlParameter.Optional, sortBy = UrlParameter.Optional });
 
             routes.MapRoute(
+                name: "NewsComments",
+                url: "comments/{action}/{ID}",
+                defaults: new { controller = "NewsComments", action = "Index", ID = UrlParameter.Optional });
+
+            routes.MapRoute(
                 name: "Users",
                 url: "users/{action}/{ID}/{user}",
                 defaults: new { controller = "Users", action = "Index", ID = UrlParameter.Optional, user = UrlParameter.Optional }

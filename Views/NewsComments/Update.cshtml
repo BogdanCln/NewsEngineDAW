@@ -1,0 +1,49 @@
+﻿@model NewsEngineTemplate.Models.NewsComments
+
+@{
+    ViewBag.Titlu = "Edit comment";
+}
+
+@if (ViewData.ContainsKey("notification"))
+{
+    <h3 class="alert alert-@ViewBag.notificationClass" role="alert">@ViewBag.notification</h3>
+}
+
+<div class="list-group-item d-flex justify-content-between lh-condensed bg-dark">
+    <div class="container">
+        <div class="container">
+            @using (Html.BeginForm("edit", "comments", FormMethod.Post, new { @class = "form-group d-flex flex-column"}))
+            {
+                @Html.HttpMethodOverride(HttpVerbs.Put)
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                @Html.HiddenFor(m => m.UserID)
+
+                @Html.HiddenFor(m => m.ID)
+
+                <div class="form-group row">
+                    @Html.Label("Content", "Comment content", new { @class = "col-2 col-form-label" })
+                    <div class="col-10">
+                        @Html.TextArea("Content", @Model.Content, new { @class = "form-control" })
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Content, "", new { @class = "text-danger " })
+                </div>
+
+                @Html.Hidden("Date", DateTime.Now, new { @class = "form-control" })
+
+                <button type="submit" class="btn btn-outline-success btn-lg" style="min-width: 12vw; align-self:center;">
+                    <i class="fa fa-check mx-2"></i> Update comment
+                </button>
+            }
+
+            <form method="post" action="/comments/delete/@Model.ID" class="form-group">
+                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                <button type="submit" class="btn btn-outline-danger btn-lg" style="min-width: 12vw">
+                    <i class="fa fa-trash mx-2"></i> Delete comment
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+

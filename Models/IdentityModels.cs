@@ -28,6 +28,7 @@ namespace NewsEngineTemplate.Models
             : base("DefaultConnection", throwIfV1Schema: false)
         { }
 
+        public DbSet<NewsComments> NewsComments { get; set; }
         public DbSet<News> NewsArticles { get; set; }
         public DbSet<NewsCategory> NewsCategories { get; set; }
 

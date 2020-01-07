@@ -88,10 +88,16 @@ namespace NewsEngineTemplate.Controllers
         //[Authorize(Roles = "User,Editor,Administrator")]
         public ActionResult Show(int ID)
         {
+            ViewBag.isAdmin = User.IsInRole("Administrator");
+            ViewBag.isEditor = User.IsInRole("Editor");
+            ViewBag.isUser = User.IsInRole("User");
+            ViewBag.userID = User.Identity.GetUserId();
+
             try
             {
                 News article = db.NewsArticles.Find(ID);
                 article.Categories = GetAllCategories();
+                //article
 
                 if (article.isProposal == true && (!User.IsInRole("Administrator") && !User.IsInRole("Editor")))
                 {
@@ -112,11 +118,6 @@ namespace NewsEngineTemplate.Controllers
                         ViewBag.notificationClass = "info";
                     }
                 }
-
-                ViewBag.isAdmin = User.IsInRole("Administrator");
-                ViewBag.isEditor = User.IsInRole("Editor");
-                ViewBag.isUser = User.IsInRole("User");
-                ViewBag.userID = User.Identity.GetUserId();
 
                 return View("Show", article);
             }
@@ -493,6 +494,13 @@ namespace NewsEngineTemplate.Controllers
                 articles = articles.Where(a => a.Title.Contains(searchExp));
             }
             return articles.ToList();
+        }
+
+        [NonAction]
+        public List<NewsComments> GetNewsComments(int newsID)
+        {
+            IQueryable<NewsComments> comments = from c in db.NewsComments where c.ArticleID == newsID orderby c.PublishDate descending select c;
+            return comments.ToList();
         }
 
         [NonAction]

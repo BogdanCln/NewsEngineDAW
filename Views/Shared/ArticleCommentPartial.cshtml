@@ -1,0 +1,23 @@
+﻿<li class="list-group-item d-flex justify-content-between lh-condensed bg-dark">
+    <div class="article-content">
+        <h6 class="article-id">@Model.User.UserName - @Model.PublishDate</h6>
+        <small class="article-content">@Model.Content</small>
+    </div>
+
+    <div class="article-buttons">
+        @if (@Model.UserID == ViewBag.userID)
+        {
+            <a class="btn btn-outline-dark btn-lg" href="/comments/edit/@Model.ID">
+                <i class="fas fa-edit"></i>
+            </a>
+        }
+
+        @if (ViewBag.isAdmin || @Model.UserID == ViewBag.userID)
+        {
+            <form method="post" action="/comments/delete/@Model.ID">
+                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                <button type="submit" class="btn btn-outline-dark btn-lg"><i class="fa fa-trash"></i></button>
+            </form>
+        }
+    </div>
+</li>
