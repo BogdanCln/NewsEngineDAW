@@ -1,33 +1,35 @@
 ![landing-page](https://github.com/BogdanCln/NewsEngineDAW/blob/master/landing.jpg)
 
 # Engine de stiri avand urmatoarele facilitati:
-> sa existe cel putin 4 tipuri de utilizatori: vizitator neinregistrat, utilizator
+- sa existe cel putin 4 tipuri de utilizatori: vizitator neinregistrat, utilizator
 inregistrat, editor si administrator. (0.5p)
 
-> orice utilizator poate vizualiza stirile aparute pe site. (0.5p) 
+- orice utilizator poate vizualiza stirile aparute pe site. (0.5p) 
 
-> Pe pagina principala vor aparea stirile cele mai recente. (0.5p)
+- Pe pagina principala vor aparea stirile cele mai recente. (0.5p)
 
-> stirile vor fi impartite pe categorii (create dinamic): stiinta, tehnologie, sport,
+- stirile vor fi impartite pe categorii (create dinamic): stiinta, tehnologie, sport,
 etc, existand posibilitatea de adaugare a noi categorii. (administratorul poate
 face CRUD pe categorii) (0.5p)
 
-> stirile dintr-o anumita categorie sunt afisate intr-o pagina separata (0.5p),
+- stirile dintr-o anumita categorie sunt afisate intr-o pagina separata (0.5p),
 unde pot fi sortate dupa diferite criterii: data aparitiei si alfabetic. (0.5p)
 
-> editorii se ocupa de publicarea stirilor noi si pot vizualiza, edita, sterge
+- editorii se ocupa de publicarea stirilor noi si pot vizualiza, edita, sterge
 propriile stiri. (1.0p). 
 
-> De asemenea, editorii pot prelua stiri de pe alte site-uri
+- De asemenea, editorii pot prelua stiri de pe alte site-uri
 de stiri, specificand doar titlul, headline-ul si o poza (sub forma de thumbnail).
 (0.5p)
 - utilizatorii pot adauga comentarii la stirile aparute, isi pot sterge si edita
 propriile comentarii (1.0p) 
-> utilizatorii pot propune stiri noi editorilor, pe care acestia
-le accepta sau le revoca. (1.5p)
-> stirile pot fi cautate prin intermediul unui motor de cautare propriu. (0.5p)
 
-> administratorii se ocupa de buna functionare a intregii aplicatii (ex: pot face
+- utilizatorii pot propune stiri noi editorilor, pe care acestia
+le accepta sau le revoca. (1.5p)
+
+- stirile pot fi cautate prin intermediul unui motor de cautare propriu. (0.5p)
+
+- administratorii se ocupa de buna functionare a intregii aplicatii (ex: pot face
 CRUD pe stiri, pe categorii, etc.) si pot activa sau revoca drepturile
 utilizatorilor si editorilor. (1.5p). Daca se implementeaza doar functionalitatea
 de activare sau revocare a drepturilor utilizatorilor – (0.5p)
