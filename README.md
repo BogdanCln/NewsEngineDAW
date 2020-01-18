@@ -1,3 +1,5 @@
+![landing-page](https://github.com/BogdanCln/NewsEngineDAW/blob/master/landing.jpg)
+
 # Engine de stiri avand urmatoarele facilitati:
 > sa existe cel putin 4 tipuri de utilizatori: vizitator neinregistrat, utilizator
 inregistrat, editor si administrator. (0.5p)
